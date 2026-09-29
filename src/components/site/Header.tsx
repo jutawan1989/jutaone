@@ -1,6 +1,7 @@
 import { useState } from "react";
-import logo from "@/assets/logo.png.asset.json";
 import { GoldButton, LOGIN_URL } from "./primitives";
+
+const LOGO_URL = "/logo-jutaone.png";
 
 const NAV = [
   { href: "#tentang", label: "Tentang" },
@@ -21,7 +22,7 @@ export function Header() {
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3 lg:flex lg:justify-between">
         <a href="#atas" className="flex min-w-0 items-center gap-3">
           <img
-            src={logo.url}
+            src={LOGO_URL}
             alt="Logo resmi JUTAONE"
             className="h-11 w-11 shrink-0 rounded-md bg-background object-contain"
           />
