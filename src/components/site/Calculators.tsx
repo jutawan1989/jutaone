@@ -4,7 +4,7 @@ import { Card, NumberField, SimLabel, idr, num } from "./primitives";
 export function TrendChart({ color = "gold", seed = 1 }: { color?: "gold" | "silver"; seed?: number }) {
   const points = Array.from({ length: 24 }, (_, i) => {
     const wave = Math.sin((i + seed * 3) / 3) * 12 + Math.sin((i + seed) / 1.7) * 5;
-    return { x: (i / 23) * 100, y: 55 - i * 1.1 + wave };
+    return { x: ((i / 23) * 100).toFixed(2), y: (55 - i * 1.1 + wave).toFixed(2) };
   });
   const path = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
   const stroke = color === "gold" ? "var(--gold)" : "var(--silver)";
