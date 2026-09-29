@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import logo from "@/assets/logo.png.asset.json";
 import { Header } from "@/components/site/Header";
 import {
   AffiliateCalculator,
@@ -17,6 +16,8 @@ import {
   idr,
 } from "@/components/site/primitives";
 
+const LOGO_URL = "/logo-jutaone.png";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -32,6 +33,8 @@ export const Route = createFileRoute("/")({
         content:
           "Jelajahi ekosistem AI, analisis emas dan perak, potensi nilai masa depan ETA serta peluang afiliasi JUTAONE.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -148,7 +151,7 @@ function Index() {
           <div className="relative">
             <div className="absolute inset-6 rounded-full bg-gold/15 blur-3xl" aria-hidden />
             <img
-              src={logo.url}
+              src={LOGO_URL}
               alt="Logo resmi JUTAONE di atas visual bumi digital"
               className="relative mx-auto w-full max-w-md rounded-3xl border border-border shadow-[var(--shadow-panel)]"
             />
@@ -461,7 +464,7 @@ function Index() {
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:grid-cols-[1fr_auto] sm:items-center">
           <div className="flex min-w-0 items-center gap-3">
             <img
-              src={logo.url}
+              src={LOGO_URL}
               alt="Logo resmi JUTAONE"
               className="h-11 w-11 shrink-0 rounded-md bg-background object-contain"
             />
