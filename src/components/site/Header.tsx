@@ -22,8 +22,8 @@ export function Header() {
         <a href="#atas" className="flex min-w-0 items-center gap-3">
           <img
             src={logo.url}
-            alt="Logo JUTAONE"
-            className="h-10 w-10 shrink-0 rounded-lg object-cover"
+            alt="Logo resmi JUTAONE"
+            className="h-11 w-11 shrink-0 rounded-md bg-background object-contain"
           />
           <span className="truncate font-display text-lg font-bold uppercase tracking-widest text-gold-gradient">
             JUTAONE

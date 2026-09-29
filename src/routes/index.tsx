@@ -460,7 +460,11 @@ function Index() {
       <footer className="border-t border-border">
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:grid-cols-[1fr_auto] sm:items-center">
           <div className="flex min-w-0 items-center gap-3">
-            <img src={logo.url} alt="Logo JUTAONE" className="h-10 w-10 shrink-0 rounded-lg" />
+            <img
+              src={logo.url}
+              alt="Logo resmi JUTAONE"
+              className="h-11 w-11 shrink-0 rounded-md bg-background object-contain"
+            />
             <div className="min-w-0">
               <p className="font-display text-sm font-bold uppercase tracking-widest text-gold-gradient">
                 JUTAONE
