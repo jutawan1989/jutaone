@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { GoldButton, LOGIN_URL } from "./primitives";
 
-const LOGO_URL = "/logo-jutaone-mark.png";
-
 const NAV = [
   { href: "#tentang", label: "Tentang" },
   { href: "#ai", label: "AI" },
@@ -20,15 +18,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3 lg:flex lg:justify-between">
-        <a href="#atas" className="flex min-w-0 items-center gap-3">
+        <a href="#atas" className="flex min-w-0 items-center">
           <img
-            src={LOGO_URL}
+            src="/logo-jutaone-header.svg"
             alt="Logo resmi JUTAONE"
-            className="h-12 w-12 shrink-0 object-contain"
+            className="h-10 w-auto max-w-[190px] shrink-0 object-contain sm:h-11"
           />
-          <span className="truncate font-display text-xl font-bold uppercase tracking-[0.16em] text-gold-gradient">
-            JUTAONE
-          </span>
         </a>
 
         <nav className="hidden items-center gap-1 lg:flex">
