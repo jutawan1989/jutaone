@@ -456,13 +456,20 @@ function Index() {
 
       <footer className="border-t border-border">
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:grid-cols-[1fr_auto] sm:items-center">
-          <div className="flex min-w-0 items-center gap-4">
+          <div className="flex min-w-0 items-center gap-3">
             <img
-              src="/logo-jutaone-footer.svg"
-              alt="Logo JUTAONE"
-              className="h-14 w-auto max-w-[320px] shrink-0 object-contain"
+              src={LOGO_URL}
+              alt="Logo resmi JUTAONE"
+              className="h-12 w-12 shrink-0 rounded-lg border border-gold/20 bg-[#06101f] object-contain p-0.5"
             />
-            <span className="sr-only">The Future of Gold &amp; Silver Intelligence</span>
+            <div className="min-w-0">
+              <p className="font-display text-sm font-bold uppercase tracking-widest text-gold-gradient">
+                JUTAONE
+              </p>
+              <p className="truncate text-xs text-muted-foreground">
+                The Future of Gold &amp; Silver Intelligence
+              </p>
+            </div>
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground sm:max-w-sm sm:text-right">
             Seluruh simulasi di situs ini bersifat ilustrasi dan bukan nasihat keuangan maupun janji
