@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GoldButton, LOGIN_URL } from "./primitives";
 
-const LOGO_URL = "/logo-jutaone-sharp.svg";
+const LOGO_URL = "/logo-jutaone-mark.png";
 
 const NAV = [
   { href: "#tentang", label: "Tentang" },
