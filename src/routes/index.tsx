@@ -157,7 +157,6 @@ function Index() {
               className="relative mx-auto w-full max-w-md rounded-3xl border border-border shadow-[var(--shadow-panel)]"
             />
           </div>
-          </div>
         </div>
         <div className="hairline mx-auto max-w-6xl" />
       </section>
