@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 140" role="img" aria-labelledby="title desc">
+<title id="title">JUTAONE</title>
+<desc id="desc">Logo horizontal JUTAONE dengan huruf J emas, bar pertumbuhan perak dan orbit emas tanpa gambar bumi.</desc>
+<defs>
+ <linearGradient id="gold" x1="0" y1="0" x2="0.8" y2="1">
+  <stop offset="0" stop-color="#fff3ad"/><stop offset=".24" stop-color="#efbd4e"/><stop offset=".52" stop-color="#fff2a0"/><stop offset=".78" stop-color="#b97816"/><stop offset="1" stop-color="#ffe18a"/>
+ </linearGradient>
+ <linearGradient id="silver" x1="0" y1="0" x2="0.8" y2="1">
+  <stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#c6ced9"/><stop offset="1" stop-color="#687586"/>
+ </linearGradient>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g filter="url(#glow)">
+ <path d="M18 83c14-31 45-51 78-52 15 0 27 4 38 12-22-4-43 0-61 11-17 10-34 21-55 29z" fill="none" stroke="url(#silver)" stroke-width="2" opacity=".8"/>
+ <g fill="url(#silver)" stroke="#f5f8ff" stroke-width="1">
+  <path d="M73 72h10v30H73z"/><path d="M88 56h10v46H88z"/><path d="M103 39h10v63h-10z"/>
+ </g>
+ <path d="M27 43h62v14H73v43c0 20-13 32-34 32-22 0-35-12-35-31v-9h18v8c0 9 5 14 16 14 10 0 15-5 15-15V57H27z" transform="translate(0 -5) scale(1 .88)" fill="url(#gold)" stroke="#fff0a2" stroke-width="1.2"/>
+ <path d="M13 104c28 17 66 13 108-22 7-6 13-13 18-20-4 17-12 30-25 41-40 33-83 38-111 18-8-6-11-12-8-17 3-5 10-3 18 0z" fill="url(#gold)" stroke="#fbe7a0" stroke-width=".8" opacity=".92"/>
+ <path d="M125 16l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff6ca"/>
+</g>
+<text x="158" y="94" font-family="Georgia, 'Times New Roman', serif" font-size="67" font-weight="700" letter-spacing="3" fill="url(#gold)">JUTA<tspan fill="url(#silver)">ONE</tspan></text>
+</svg>
