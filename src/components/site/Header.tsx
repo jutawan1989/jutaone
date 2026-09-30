@@ -22,7 +22,7 @@ export function Header() {
           <img
             src="/logo-jutaone-header.svg"
             alt="Logo resmi JUTAONE"
-            className="h-10 w-auto max-w-[190px] shrink-0 object-contain sm:h-11"
+            className="h-12 w-auto max-w-[220px] shrink-0 object-contain"
           />
         </a>
 
