@@ -16,7 +16,7 @@ import {
   idr,
 } from "@/components/site/primitives";
 
-const LOGO_URL = "/logo-jutaone.png";
+const LOGO_URL = "/logo-jutaone-full.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -148,7 +148,7 @@ function Index() {
             </div>
           </div>
           <div className="relative flex h-[460px] min-h-[400px] items-center justify-center">
-            <img src="/logo-jutaone.png" alt="Logo JUTAONE" className="h-full w-full object-contain" />
+            <img src="/logo-jutaone-full.png" alt="Logo JUTAONE tanpa bumi" className="h-full w-full object-contain" />
           </div>
         </div>
         <div className="hairline mx-auto max-w-6xl" />
