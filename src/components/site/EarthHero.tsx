@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useState, type ErrorInfo, type ReactNode } from "react";
+import { Component, Suspense, useEffect, useState, type ErrorInfo, type ReactNode } from "react";
 import * as THREE from "three";
 import { EarthScene } from "./EarthCanvas";
 
@@ -15,7 +15,7 @@ function StaticFallback() {
   );
 }
 
-class EarthErrorBoundary extends React.Component<
+class EarthErrorBoundary extends Component<
   { children: ReactNode; fallback: ReactNode },
   { failed: boolean }
 > {
