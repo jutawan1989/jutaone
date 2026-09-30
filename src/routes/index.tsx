@@ -16,7 +16,7 @@ import {
   idr,
 } from "@/components/site/primitives";
 
-import { EarthVisual } from "@/components/site/EarthVisual";
+import { EarthHero } from "@/components/site/EarthHero";
 const LOGO_URL = "/logo-jutaone.png";
 
 export const Route = createFileRoute("/")({
@@ -148,14 +148,8 @@ function Index() {
               ))}
             </div>
           </div>
-          <div className="relative flex min-h-[400px] items-center justify-center">
-            <EarthVisual />
-            <div className="absolute inset-6 rounded-full bg-gold/15 blur-3xl" aria-hidden />
-            <img
-              src={LOGO_URL}
-              alt="Logo resmi JUTAONE di atas visual bumi digital"
-              className="relative mx-auto w-full max-w-md rounded-3xl border border-border shadow-[var(--shadow-panel)]"
-            />
+          <div className="relative flex h-[460px] min-h-[400px] items-center justify-center">
+            <EarthHero />
           </div>
         </div>
         <div className="hairline mx-auto max-w-6xl" />
