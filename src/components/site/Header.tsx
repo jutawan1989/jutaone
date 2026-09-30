@@ -31,12 +31,12 @@ export function Header() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-6 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {NAV.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-gold"
+              className="group relative flex min-w-[58px] flex-col items-center justify-center gap-2 rounded-t-lg px-3 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground transition-all duration-200 hover:bg-gold/5 hover:text-gold after:absolute after:bottom-0 after:left-1/4 after:h-[2px] after:w-1/2 after:scale-x-0 after:bg-gold after:shadow-[0_0_10px_rgba(245,190,70,0.9)] after:transition-transform after:duration-200 hover:after:scale-x-100"
             >
               {item.label}
             </a>
