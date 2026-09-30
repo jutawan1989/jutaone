@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">JUTAONE Logo</title>
+  <desc id="desc">Premium gold and silver JUTAONE emblem with a global intelligence motif.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#102d58"/>
+      <stop offset=".55" stop-color="#07152e"/>
+      <stop offset="1" stop-color="#020713"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff4b0"/>
+      <stop offset=".22" stop-color="#e9b949"/>
+      <stop offset=".52" stop-color="#fff0a0"/>
+      <stop offset=".78" stop-color="#b87916"/>
+      <stop offset="1" stop-color="#ffe28a"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".45" stop-color="#b9c4d2"/>
+      <stop offset="1" stop-color="#6d7786"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+
+  <rect width="800" height="800" rx="120" fill="url(#bg)"/>
+  <circle cx="400" cy="330" r="255" fill="#071a35" stroke="#2c7eea" stroke-width="7" opacity=".98"/>
+  <circle cx="400" cy="330" r="238" fill="none" stroke="#4aa1ff" stroke-width="2" opacity=".55"/>
+
+  <g fill="none" stroke="#6fb9ff" opacity=".28">
+    <ellipse cx="400" cy="330" rx="235" ry="82" stroke-width="2"/>
+    <ellipse cx="400" cy="330" rx="235" ry="150" stroke-width="2"/>
+    <ellipse cx="400" cy="330" rx="80" ry="235" stroke-width="2"/>
+    <ellipse cx="400" cy="330" rx="150" ry="235" stroke-width="2"/>
+  </g>
+
+  <g fill="none" stroke="url(#gold)" opacity=".75" filter="url(#glow)">
+    <ellipse cx="400" cy="330" rx="315" ry="105" stroke-width="2"/>
+    <ellipse cx="400" cy="330" rx="330" ry="190" stroke-width="1.5" transform="rotate(-18 400 330)"/>
+  </g>
+
+  <path d="M185 315c35-82 111-145 207-158 82-11 161 18 216 76-70-17-142-8-202 22-79 40-139 47-221 60z" fill="#0e3158" opacity=".9"/>
+  <path d="M190 360c70-32 132-28 197 3 73 35 127 29 212-18-25 103-108 178-211 186-99 8-174-57-198-171z" fill="#0a2544" opacity=".85"/>
+
+  <g filter="url(#glow)">
+    <circle cx="220" cy="225" r="5" fill="#ffe69a"/>
+    <circle cx="560" cy="185" r="4" fill="#ffe69a"/>
+    <circle cx="600" cy="410" r="5" fill="#ffe69a"/>
+    <circle cx="170" cy="430" r="4" fill="#8cc7ff"/>
+  </g>
+
+  <!-- Core J emblem -->
+  <path d="M300 205h205v48h-58v240c0 63-42 101-111 101-66 0-109-35-109-92v-35h61v28c0 31 18 49 50 49 32 0 48-18 48-53V253h-86z" fill="url(#gold)" stroke="#fff2a5" stroke-width="2"/>
+  <path d="M272 548c28 32 65 48 111 48 66 0 105-33 105-91v-24c-3 74-38 111-104 111-47 0-81-15-112-44z" fill="#8a5b13" opacity=".55"/>
+
+  <!-- Silver growth bars -->
+  <g fill="url(#silver)" stroke="#fff" stroke-width="1">
+    <rect x="470" y="390" width="28" height="105" rx="5"/>
+    <rect x="508" y="355" width="28" height="140" rx="5"/>
+    <rect x="546" y="318" width="28" height="177" rx="5"/>
+    <rect x="584" y="278" width="28" height="217" rx="5"/>
+  </g>
+
+  <!-- Rising silver/gold swoosh -->
+  <path d="M218 566c113 55 260 45 394-87 18-18 31-38 43-60-8 48-29 87-63 119-133 126-288 145-408 74-18-11-25-29-20-46 6-18 31-10 54 0z" fill="url(#silver)" opacity=".96"/>
+  <path d="M215 551c114 47 253 29 378-92 18-17 35-38 50-61-15 54-44 96-82 129-120 103-255 119-366 65z" fill="url(#gold)" opacity=".94"/>
+
+  <!-- Wordmark -->
+  <text x="400" y="690" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="73" font-weight="700" letter-spacing="7" fill="url(#gold)">JUTAONE</text>
+  <line x1="135" y1="716" x2="665" y2="716" stroke="url(#gold)" stroke-width="2" opacity=".8"/>
+  <text x="400" y="748" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" letter-spacing="4" fill="#d9e1eb">GOLD • SILVER • AI INTELLIGENCE</text>
+</svg>
