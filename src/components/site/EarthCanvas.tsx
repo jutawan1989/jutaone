@@ -2,28 +2,12 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
+// One full rotation every 30 seconds, independent of frame rate.
 const ROTATION_SPEED = (Math.PI * 2) / 30;
-
-function useReducedMotion() {
-  const reducedMotion = useRef(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      reducedMotion.current = media.matches;
-    };
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-
-  return reducedMotion;
-}
 
 function Earth() {
   const earthRef = useRef<THREE.Group>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
-  const reducedMotion = useReducedMotion();
   const [dayMap, nightMap, waterMap, cloudMap] = useLoader(THREE.TextureLoader, [
     "/textures/earth-day.jpg",
     "/textures/earth-night.jpg",
@@ -41,7 +25,7 @@ function Earth() {
   }, [cloudMap, dayMap, nightMap]);
 
   useFrame((_, rawDelta) => {
-    if (reducedMotion.current) return;
+    // Always rotate. Cap large deltas after tab suspension to avoid jumps.
     const delta = Math.min(rawDelta, 0.05);
     if (earthRef.current) earthRef.current.rotation.y += ROTATION_SPEED * delta;
     if (cloudsRef.current) cloudsRef.current.rotation.y += ROTATION_SPEED * 1.08 * delta;
