@@ -24,9 +24,9 @@ export function Header() {
           <img
             src={LOGO_URL}
             alt="Logo resmi JUTAONE"
-            className="h-11 w-11 shrink-0 rounded-md bg-background object-contain"
+            className="h-12 w-12 shrink-0 object-contain"
           />
-          <span className="truncate font-display text-lg font-bold uppercase tracking-widest text-gold-gradient">
+          <span className="truncate font-display text-xl font-bold uppercase tracking-[0.16em] text-gold-gradient">
             JUTAONE
           </span>
         </a>
