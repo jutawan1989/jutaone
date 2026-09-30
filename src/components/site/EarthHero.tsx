@@ -9,7 +9,7 @@ function StaticFallback() {
   return (
     <img
       src={LOGO_URL}
-      alt="Logo resmi JUTAONE di atas visual bumi digital"
+      alt="Logo resmi JUTAONE"
       className="h-full w-full object-contain"
     />
   );
@@ -54,30 +54,31 @@ export function EarthHero() {
 
   return (
     <EarthErrorBoundary fallback={<StaticFallback />}>
-      <div className="relative h-full w-full overflow-hidden rounded-3xl border border-border bg-background shadow-[var(--shadow-panel)]">
-        <Canvas
-          dpr={[1, 1.5]}
-          camera={{ position: [0, 0, 4.35], fov: 42, near: 0.1, far: 30 }}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-          onCreated={({ gl }) => {
-            gl.outputColorSpace = THREE.SRGBColorSpace;
-            gl.toneMapping = THREE.ACESFilmicToneMapping;
-            gl.toneMappingExposure = 1.08;
-          }}
-        >
-          <color attach="background" args={["#020916"]} />
-          <Suspense fallback={null}>
-            <EarthScene />
-          </Suspense>
-        </Canvas>
-
-        <div className="pointer-events-none absolute inset-x-0 bottom-3 z-10 flex justify-center sm:bottom-4">
-          <img
-            src={LOGO_URL}
-            alt="Logo resmi JUTAONE"
-            className="w-24 rounded-md border border-border/70 bg-background/90 object-contain shadow-[var(--shadow-panel)] sm:w-32"
-          />
+      <div className="relative h-full w-full overflow-hidden rounded-3xl border border-border bg-[#020916] shadow-[var(--shadow-panel)]">
+        {/* The original logo remains visible while the 3D Earth rotates in its globe area. */}
+        <div className="absolute inset-x-0 top-0 h-[68%]">
+          <Canvas
+            dpr={[1, 1.5]}
+            camera={{ position: [0, 0, 4.35], fov: 42, near: 0.1, far: 30 }}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+            onCreated={({ gl }) => {
+              gl.outputColorSpace = THREE.SRGBColorSpace;
+              gl.toneMapping = THREE.ACESFilmicToneMapping;
+              gl.toneMappingExposure = 1.08;
+            }}
+          >
+            <color attach="background" args={["#020916"]} />
+            <Suspense fallback={null}>
+              <EarthScene />
+            </Suspense>
+          </Canvas>
         </div>
+
+        <img
+          src={LOGO_URL}
+          alt="Logo JUTAONE dengan bumi digital"
+          className="pointer-events-none absolute inset-0 z-10 h-full w-full object-contain mix-blend-screen"
+        />
       </div>
     </EarthErrorBoundary>
   );
