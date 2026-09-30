@@ -148,7 +148,7 @@ function Index() {
             </div>
           </div>
           <div className="relative flex h-[460px] min-h-[400px] items-center justify-center">
-            <img src="/logo-jutaone-full.png" alt="Logo JUTAONE tanpa bumi" className="h-full w-full object-contain" />
+            <img src="/logo-jutaone-mark.png" alt="Logo JUTAONE tanpa bumi" className="h-full w-full object-contain" />
           </div>
         </div>
         <div className="hairline mx-auto max-w-6xl" />
