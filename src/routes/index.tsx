@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
+import { MarketAnalyst } from "@/components/site/MarketAnalyst";
 import { EarthHero } from "@/components/site/EarthHero";
 import {
   AffiliateCalculator,
@@ -211,20 +212,7 @@ function Index() {
             </Card>
           ))}
         </div>
-        <Card className="mt-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="text-base font-bold uppercase">Status Data</h3>
-            <SimLabel>Belum Terhubung</SimLabel>
-          </div>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Data pasar langsung belum terhubung pada halaman pemasaran ini. Karena itu kami tidak
-            menampilkan angka pasar maupun hasil analisis apa pun agar tidak menyesatkan. Analisis
-            lengkap tersedia di dalam portal anggota.
-          </p>
-          <div className="mt-6">
-            <GoldButton href={LOGIN_URL}>Masuk Portal Anggota</GoldButton>
-          </div>
-        </Card>
+        <MarketAnalyst />
       </Section>
 
       {/* EMAS */}
