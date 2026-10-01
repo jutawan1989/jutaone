@@ -350,7 +350,38 @@ export function MetalCalculator({
 }) {
   const [gram, setGram] = useState(10);
   const [price, setPrice] = useState(defaultPrice);
-  const total = gram * price;
+  const [liveGoldPrice, setLiveGoldPrice] = useState<number | null>(null);
+  const [goldPriceTime, setGoldPriceTime] = useState<string | undefined>();
+  const [goldPriceStatus, setGoldPriceStatus] = useState<"loading" | "live" | "stale" | "error">("loading");
+
+  useEffect(() => {
+    if (accent !== "gold" || metal !== "Emas") return;
+    let cancelled = false;
+    const loadGoldPrice = async () => {
+      try {
+        const response = await fetch(API + "/spot?currency=IDR&unit=gram&compact=1", { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        const data = (await response.json()) as XausSpot;
+        const currentPrice = data.xau?.price;
+        if (!Number.isFinite(currentPrice) || !currentPrice || data.xau?.currency !== "IDR" || data.xau?.unit !== "gram") {
+          throw new Error("Harga emas IDR tidak valid");
+        }
+        if (cancelled) return;
+        setLiveGoldPrice(currentPrice);
+        setGoldPriceTime(data.price_as_of ?? data.data_state?.as_of ?? data.updated_at);
+        setGoldPriceStatus(data.stale || data.data_state?.status === "stale" ? "stale" : "live");
+      } catch {
+        if (!cancelled) setGoldPriceStatus("error");
+      }
+    };
+    void loadGoldPrice();
+    const timer = window.setInterval(() => void loadGoldPrice(), 60_000);
+    return () => { cancelled = true; window.clearInterval(timer); };
+  }, [accent, metal]);
+
+  const isLiveGold = accent === "gold" && metal === "Emas";
+  const effectivePrice = isLiveGold ? liveGoldPrice ?? 0 : price;
+  const total = gram * effectivePrice;
 
   return (
     <Card>
@@ -359,29 +390,32 @@ export function MetalCalculator({
         <SimLabel />
       </div>
       <p className="mt-3 text-sm text-muted-foreground">
-        Masukkan berat dan harga acuan Anda sendiri. Nilai di bawah adalah hasil perhitungan
-        simulasi, bukan harga pasar resmi.
+        {isLiveGold
+          ? "Harga per gram mengikuti harga spot emas terkini dalam IDR. Nilai estimasi bersifat indikatif, bukan harga jual atau buyback."
+          : "Masukkan berat dan harga acuan Anda sendiri. Nilai di bawah adalah hasil perhitungan simulasi, bukan harga pasar resmi."}
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <NumberField label="Berat (gram)" value={gram} onChange={setGram} suffix="gr" />
-        <NumberField
-          label={`Harga per gram (IDR)`}
-          value={price}
-          onChange={setPrice}
-          step={1000}
-          suffix="IDR"
-        />
+        {isLiveGold ? (
+          <div>
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Harga per gram (IDR)</span>
+            <div className="flex h-[50px] items-center justify-between rounded-xl border border-border bg-background/50 px-4">
+              <span className="font-medium text-foreground">{liveGoldPrice !== null ? num(liveGoldPrice, 0) : goldPriceStatus === "error" ? "Tidak tersedia" : "Memuat harga…"}</span>
+              <span className="text-xs text-muted-foreground">IDR</span>
+            </div>
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              {goldPriceStatus === "live" ? "LIVE" : goldPriceStatus === "stale" ? "Data terakhir (kedaluwarsa)" : goldPriceStatus === "error" ? "Gagal memuat harga" : "Mengambil data langsung"}
+              {goldPriceTime ? " · " + formatTime(goldPriceTime) : ""}
+            </p>
+          </div>
+        ) : (
+          <NumberField label="Harga per gram (IDR)" value={price} onChange={setPrice} step={1000} suffix="IDR" />
+        )}
       </div>
       <div className="mt-6 rounded-xl border border-border bg-background/50 p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Estimasi nilai
-        </p>
-        <p
-          className={`mt-2 font-display text-2xl font-bold sm:text-3xl ${
-            accent === "gold" ? "text-gold-gradient" : "text-silver-gradient"
-          }`}
-        >
-          {idr(total)}
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Estimasi nilai</p>
+        <p className={`mt-2 font-display text-2xl font-bold sm:text-3xl ${accent === "gold" ? "text-gold-gradient" : "text-silver-gradient"}`}>
+          {isLiveGold && liveGoldPrice === null ? "—" : idr(total)}
         </p>
       </div>
     </Card>
