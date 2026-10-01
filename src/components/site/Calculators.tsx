@@ -437,11 +437,20 @@ const LEVELS = [
 ];
 
 export function AffiliateCalculator() {
-  const [pin, setPin] = useState(10_000);
-  const [perLevel, setPerLevel] = useState(5);
+  const [pin, setPin] = useState(1_000);
+  const [perLevel, setPerLevel] = useState(3);
 
-  const rows = LEVELS.map((l) => ({ ...l, commission: pin * l.rate * perLevel }));
-  const total = rows.reduce((s, r) => s + r.commission, 0);
+  // Simulasi hirarki sempurna: setiap anggota menaja bilangan ahli yang sama.
+  const rows = LEVELS.map((level, index) => {
+    const members = Math.pow(Math.max(0, Math.floor(perLevel)), index + 1);
+    return {
+      ...level,
+      members,
+      commission: members * Math.max(0, pin) * level.rate,
+    };
+  });
+  const totalMembers = rows.reduce((sum, row) => sum + row.members, 0);
+  const totalBonus = rows.reduce((sum, row) => sum + row.commission, 0);
 
   return (
     <Card>
@@ -450,46 +459,62 @@ export function AffiliateCalculator() {
         <SimLabel />
       </div>
       <p className="mt-3 text-sm text-muted-foreground">
-        Hitung komisi berdasarkan jumlah penjualan PIN yang memenuhi syarat dari anggota aktif di
-        setiap level. Satu penjualan hanya dihitung satu kali per level.
+        Simulasikan hirarki sempurna: setiap anggota menaja jumlah ahli yang sama hingga 20 level.
+        Bonus dihitung berdasarkan jumlah ahli pada setiap level, harga PIN, dan kadar komisi.
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <NumberField label="Harga PIN (IDR)" value={pin} onChange={setPin} step={1000} suffix="IDR" labelMinHeight />
         <NumberField
-          label="Penjualan PIN memenuhi syarat per level"
+          label="Jumlah ahli langsung per anggota"
           value={perLevel}
           onChange={setPerLevel}
-          suffix="PIN"
+          step={1}
+          min={0}
+          suffix="AHLI"
           labelMinHeight
         />
       </div>
 
-      <div className="mt-6 rounded-xl border border-border bg-background/50 p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Total komisi simulasi (L1–L20)
-        </p>
-        <p className="mt-2 font-display text-2xl font-bold text-gold-gradient sm:text-3xl">
-          {idr(total)}
-        </p>
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <div className="rounded-xl border border-border bg-background/50 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            Jumlah ahli hingga L20
+          </p>
+          <p className="mt-2 font-display text-2xl font-bold text-silver sm:text-3xl">
+            {num(totalMembers, 0)}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">Tidak termasuk ahli yang membuat simulasi</p>
+        </div>
+        <div className="rounded-xl border border-border bg-background/50 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            Total bonus simulasi (L1–L20)
+          </p>
+          <p className="mt-2 font-display text-2xl font-bold text-gold-gradient sm:text-3xl">
+            {idr(totalBonus)}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">Anggaran bonus berdasarkan hirarki sempurna</p>
+        </div>
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {rows.map((r) => (
+        {rows.map((row) => (
           <div
-            key={r.level}
+            key={row.level}
             className="rounded-lg border border-border bg-background/40 px-3 py-2 text-xs"
           >
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-silver">{r.level}</span>
-              <span className="text-gold">{num(r.rate * 100, 0)}%</span>
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-bold text-silver">{row.level}</span>
+              <span className="text-gold">{num(row.rate * 100, 0)}%</span>
             </div>
-            <p className="mt-1 text-muted-foreground">{idr(r.commission)}</p>
+            <p className="mt-1 text-muted-foreground">{num(row.members, 0)} ahli</p>
+            <p className="mt-1 font-medium text-foreground">{idr(row.commission)}</p>
           </div>
         ))}
       </div>
-      <p className="mt-5 text-xs text-muted-foreground">
-        Simulasi ini bukan janji pendapatan. Komisi nyata bergantung pada penjualan PIN yang sah dan
-        status keaktifan anggota.
+      <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
+        Ini ialah simulasi matematik dengan andaian setiap ahli menaja jumlah yang sama dan setiap ahli
+        membeli satu PIN yang layak. Struktur sebenar, syarat kelayakan, had pembayaran dan jualan
+        sebenar boleh menyebabkan jumlah ahli serta bonus berbeza. Simulasi ini bukan jaminan pendapatan.
       </p>
     </Card>
   );
