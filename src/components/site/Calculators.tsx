@@ -34,7 +34,7 @@ function formatTime(value?: string | number) {
   }).format(date) + " WIB";
 }
 
-export function TrendChart({ color = "gold", seed = 1 }: { color?: Metal; seed?: number }) {
+function GoldTrendChart({ color = "gold", seed = 1 }: { color?: Metal; seed?: number }) {
   const [range, setRange] = useState<Range>("day");
   const [spot, setSpot] = useState<number | null>(null);
   const [spotTime, setSpotTime] = useState<string | undefined>();
@@ -199,6 +199,144 @@ export function TrendChart({ color = "gold", seed = 1 }: { color?: Metal; seed?:
       {stale && <p className="mt-2 text-[11px] text-amber-400">API mengembalikan data terakhir yang tersedia; harga ini bukan bacaan baharu.</p>}
     </div>
   );
+}
+
+type SilverSpotResponse = {
+  silver_usd_oz?: number | null;
+  fx_rate?: number;
+  updated_at?: string;
+  data_state?: { status?: string; as_of?: string; age_seconds?: number };
+};
+type SilverChartResponse = {
+  points?: Array<{ t?: number; c?: number }>;
+  data_state?: { status?: string; as_of?: string; age_seconds?: number };
+};
+
+function SilverLiveChart() {
+  const [range, setRange] = useState<Range>("day");
+  const [spot, setSpot] = useState<number | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<string | undefined>();
+  const [status, setStatus] = useState<"loading" | "live" | "stale" | "error">("loading");
+  const [points, setPoints] = useState<Array<{ t: number; p: number }>>([]);
+  const [seriesError, setSeriesError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const response = await fetch(`${API}/spot?currency=IDR&unit=gram&compact=1`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = (await response.json()) as SilverSpotResponse;
+        if (!Number.isFinite(data.silver_usd_oz) || !data.silver_usd_oz || !Number.isFinite(data.fx_rate) || !data.fx_rate) {
+          throw new Error("Harga perak atau kurs IDR tidak tersedia");
+        }
+        if (cancelled) return;
+        setSpot((data.silver_usd_oz * data.fx_rate) / 31.1034768);
+        setUpdatedAt(data.data_state?.as_of ?? data.updated_at);
+        setStatus(data.data_state?.status === "stale" ? "stale" : "live");
+      } catch {
+        if (!cancelled) setStatus("error");
+      }
+    };
+    void load();
+    const timer = window.setInterval(() => void load(), 60_000);
+    return () => { cancelled = true; window.clearInterval(timer); };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        let raw: Array<{ t?: number; p?: number }> = [];
+        if (range === "day") {
+          const response = await fetch(`${API}/intraday?symbol=xag&hours=24`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = (await response.json()) as XausIntraday;
+          raw = data.points ?? [];
+        } else {
+          const rangeMap: Record<Exclude<Range, "day">, string> = { week: "5d", month: "1mo", year: "1y" };
+          const response = await fetch(`${API}/chart?symbol=silver&range=${rangeMap[range]}&interval=1d`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = (await response.json()) as SilverChartResponse;
+          raw = (data.points ?? []).map((p) => ({ t: p.t, p: p.c }));
+        }
+        const fxResponse = await fetch(`${API}/spot?currency=IDR&unit=gram&compact=1`, { cache: "no-store" });
+        if (!fxResponse.ok) throw new Error(`HTTP ${fxResponse.status}`);
+        const fx = (await fxResponse.json()) as SilverSpotResponse;
+        if (!Number.isFinite(fx.fx_rate) || !fx.fx_rate) throw new Error("Kurs IDR tidak tersedia");
+        const converted = raw.flatMap((p) => {
+          const t = typeof p.t === "number" ? (p.t > 1e12 ? p.t : p.t * 1000) : NaN;
+          return Number.isFinite(t) && Number.isFinite(p.p) && p.p! > 0
+            ? [{ t, p: (p.p! * fx.fx_rate!) / 31.1034768 }]
+            : [];
+        }).sort((a, b) => a.t - b.t);
+        if (cancelled) return;
+        setPoints(converted);
+        setSeriesError(false);
+      } catch {
+        if (!cancelled) { setPoints([]); setSeriesError(true); }
+      }
+    };
+    void load();
+    return () => { cancelled = true; };
+  }, [range]);
+
+  const min = points.length ? Math.min(...points.map((p) => p.p)) : 0;
+  const max = points.length ? Math.max(...points.map((p) => p.p)) : 0;
+  const span = max - min || Math.max(max * 0.01, 1);
+  const path = points.map((p, i) => {
+    const x = points.length === 1 ? 50 : (i / (points.length - 1)) * 100;
+    const y = 70 - ((p.p - min) / span) * 55;
+    return `${i === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
+  }).join(" ");
+  const fillId = "fill-silver-live";
+  const labels: { value: Range; label: string }[] = [
+    { value: "day", label: "Harian" }, { value: "week", label: "Mingguan" },
+    { value: "month", label: "Bulanan" }, { value: "year", label: "Tahunan" },
+  ];
+  return (
+    <div>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className={`h-2 w-2 rounded-full ${status === "live" ? "bg-emerald-400" : status === "stale" ? "bg-amber-400" : "bg-muted-foreground"}`} />
+          <span className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+            {status === "live" ? "LIVE" : status === "stale" ? "DATA TERAKHIR (KEDALUWARSA)" : status === "error" ? "DATA TIDAK TERSEDIA" : "MEMUAT DATA"}
+          </span>
+        </div>
+        <span className="text-[11px] text-muted-foreground">Sumber: XAUS · IDR/gram</span>
+      </div>
+      <div className="mb-3">
+        {spot !== null ? <p className="font-display text-2xl font-bold text-silver-gradient">{idr(spot)} <span className="font-sans text-xs font-medium text-muted-foreground">/ gram</span></p> :
+          <p className="text-sm text-muted-foreground">{status === "error" ? "Harga perak langsung gagal dimuat." : "Mengambil harga perak langsung…"}</p>}
+        <p className="mt-1 text-[11px] text-muted-foreground">Data per: {formatTime(updatedAt)}</p>
+      </div>
+      {points.length ? (
+        <svg viewBox="0 0 100 80" preserveAspectRatio="none" className="h-40 w-full" role="img" aria-label="Grafik harga perak aktual dalam Rupiah per gram">
+          <defs><linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--silver)" stopOpacity="0.35" /><stop offset="100%" stopColor="var(--silver)" stopOpacity="0" /></linearGradient></defs>
+          {[20, 40, 60].map((y) => <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="var(--border)" strokeWidth="0.3" />)}
+          <path d={`${path} L100,80 L0,80 Z`} fill={`url(#${fillId})`} />
+          <path d={path} fill="none" stroke="var(--silver)" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+        </svg>
+      ) : (
+        <div className="flex h-40 items-center justify-center rounded-lg border border-dashed border-border text-xs text-muted-foreground">
+          {seriesError ? "Data grafik perak tidak tersedia." : "Memuat data grafik perak…"}
+        </div>
+      )}
+      <div className="mt-4 grid grid-cols-4 gap-2 text-center text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+        {labels.map((item) => <button key={item.value} type="button" onClick={() => setRange(item.value)} aria-pressed={range === item.value}
+          className={`rounded-lg border py-2 transition-colors ${range === item.value ? "border-silver bg-silver/10 text-silver" : "border-border bg-background/40 hover:border-silver/50"}`}>{item.label}</button>)}
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+        <div className="rounded-lg border border-border bg-background/40 p-3"><span className="font-medium text-foreground">Volatilitas</span><p className="mt-1">Pergerakan berdasarkan data harga yang tersedia.</p></div>
+        <div className="rounded-lg border border-border bg-background/40 p-3"><span className="font-medium text-foreground">Rasio Emas–Perak</span><p className="mt-1">Pantau di portal anggota.</p></div>
+      </div>
+      <p className="mt-2 text-[11px] text-muted-foreground">Harga spot indikatif, bukan harga jual atau buyback. Data perak dikonversi dari USD/troy ounce ke IDR/gram menggunakan kurs USD/IDR terkini.</p>
+    </div>
+  );
+}
+
+export function TrendChart(props: { color?: Metal; seed?: number }) {
+  return props.color === "silver" ? <SilverLiveChart /> : <GoldTrendChart {...props} />;
 }
 
 export function MetalCalculator({
