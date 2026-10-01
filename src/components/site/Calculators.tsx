@@ -454,12 +454,13 @@ export function AffiliateCalculator() {
         setiap level. Satu penjualan hanya dihitung satu kali per level.
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <NumberField label="Harga PIN (IDR)" value={pin} onChange={setPin} step={1000} suffix="IDR" />
+        <NumberField label="Harga PIN (IDR)" value={pin} onChange={setPin} step={1000} suffix="IDR" labelMinHeight />
         <NumberField
           label="Penjualan PIN memenuhi syarat per level"
           value={perLevel}
           onChange={setPerLevel}
           suffix="PIN"
+          labelMinHeight
         />
       </div>
 
