@@ -455,7 +455,7 @@ function compactIdNumber(value: number, currency = false) {
 }
 
 export function AffiliateCalculator() {
-  const [pin, setPin] = useState(1_000);
+  const [pin, setPin] = useState(10_000);
   const [perLevel, setPerLevel] = useState(3);
 
   // Simulasi hirarki sempurna: setiap anggota menaja bilangan ahli yang sama.
@@ -481,7 +481,7 @@ export function AffiliateCalculator() {
         Bonus dihitung berdasarkan jumlah ahli pada setiap level, harga PIN, dan kadar komisi.
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <NumberField label="Harga PIN (IDR)" value={pin} onChange={setPin} step={1000} suffix="IDR" labelMinHeight />
+        <NumberField label="Harga PIN (IDR)" value={pin} onChange={(value) => setPin(Math.max(10_000, value))} step={1000} min={10_000} suffix="IDR" labelMinHeight />
         <NumberField
           label="Jumlah ahli langsung per anggota"
           value={perLevel}
