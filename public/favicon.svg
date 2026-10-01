@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+<title id="title">JUTAONE</title>
+<defs>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#fff9c9"/><stop offset=".2" stop-color="#ffd65a"/><stop offset=".48" stop-color="#f7a91b"/><stop offset=".72" stop-color="#a85d0b"/><stop offset="1" stop-color="#ffe99c"/>
+ </linearGradient>
+ <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#cbd5e1"/><stop offset="1" stop-color="#687689"/>
+ </linearGradient>
+ <radialGradient id="ocean" cx="36%" cy="28%" r="78%">
+  <stop offset="0" stop-color="#42d4ff"/><stop offset=".42" stop-color="#0879ce"/><stop offset=".78" stop-color="#052452"/><stop offset="1" stop-color="#020b1c"/>
+ </radialGradient>
+ <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3a6"/><stop offset=".45" stop-color="#f6b72e"/><stop offset="1" stop-color="#a65b0b"/></linearGradient>
+ <clipPath id="globe"><circle cx="256" cy="210" r="154"/></clipPath>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="512" height="512" rx="72" fill="#031022"/>
+<rect x="10" y="10" width="492" height="492" rx="66" fill="none" stroke="url(#rim)" stroke-width="12"/>
+<rect x="23" y="23" width="466" height="466" rx="54" fill="none" stroke="#287cc1" stroke-opacity=".48" stroke-width="2"/>
+<circle cx="256" cy="210" r="164" fill="#058fe3" opacity=".18" filter="url(#glow)"/>
+<circle cx="256" cy="210" r="154" fill="url(#ocean)" stroke="#a9e7ff" stroke-width="4"/>
+<g clip-path="url(#globe)" fill="none" stroke="#7ddfff" stroke-width="1.5" opacity=".5">
+ <ellipse cx="256" cy="210" rx="76" ry="154"/>
+ <ellipse cx="256" cy="210" rx="132" ry="154"/>
+ <path d="M95 210h322M113 158h286M113 262h286M141 112h230M141 308h230"/>
+</g>
+<g clip-path="url(#globe)" fill="#d99a24" stroke="#ffdf7a" stroke-width="2" opacity=".97">
+ <path d="M139 117l18-22 27-4 14 13 24-3 10 11-11 16 16 9-9 17-21 5-8 19-19 5-8 24-18 5-12-19-20-8-6-18-20-5 8-24 24-21z"/>
+ <path d="M201 207l19 5 8 20-12 15-3 24-17 11-8-21-17-8 2-23 17-9z"/>
+ <path d="M255 239l24 9 10 19-10 16-14-5-15-17z"/>
+ <path d="M286 270l20 11 5 25-14 25-16-4-10-23z"/>
+ <path d="M322 292l30 5 24 18-4 25-23 17-29-8-16-21z"/>
+ <path d="M108 275l14-9 15 13-5 19-17 4z"/>
+</g>
+<g clip-path="url(#globe)" fill="#ffe6a0" opacity=".88" filter="url(#glow)">
+ <circle cx="158" cy="145" r="3"/><circle cx="183" cy="172" r="2.6"/><circle cx="211" cy="141" r="2.4"/>
+ <circle cx="236" cy="189" r="2.3"/><circle cx="278" cy="156" r="2.4"/><circle cx="297" cy="224" r="2.5"/>
+ <circle cx="248" cy="280" r="2.3"/><circle cx="332" cy="284" r="2.4"/><circle cx="356" cy="312" r="2.3"/>
+</g>
+<g fill="none" stroke="#ffcf4f" stroke-width="4" opacity=".92">
+ <ellipse cx="256" cy="210" rx="204" ry="70" transform="rotate(-24 256 210)"/>
+</g>
+<g transform="translate(0 0)">
+ <path d="M177 206h176l-25 31h-34v112c0 52-31 82-83 82-50 0-80-28-80-75v-25h43v21c0 22 12 34 36 34 25 0 37-15 37-40V237h-86z" fill="url(#gold)" stroke="#fff0a2" stroke-width="4" stroke-linejoin="round"/>
+ <g fill="url(#silver)" stroke="#fff" stroke-width="2">
+  <path d="M332 275l23-10v78l-23 10z"/><path d="M362 241l23-10v101l-23 10z"/><path d="M392 206l23-10v124l-23 10z"/>
+ </g>
+ <path d="M93 365c39 24 104 18 171-21 45-26 80-58 101-91-8 46-35 83-80 113-66 45-141 52-190 20-19-12-26-29-18-41 4-7 10 12 16 20z" fill="url(#gold)" stroke="#ffeda5" stroke-width="2"/>
+</g>
+<path d="M407 71l6 17 17 6-17 6-6 17-6-17-17-6 17-6z" fill="#fff8c8" filter="url(#glow)"/>
+<text x="256" y="465" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="57" font-weight="900" letter-spacing="1.5" fill="url(#gold)" stroke="#452b0a" stroke-width="1">JUTA<tspan fill="url(#silver)">ONE</tspan></text>
+</svg>
