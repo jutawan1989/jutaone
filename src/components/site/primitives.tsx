@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export const LOGIN_URL = "https://jutaone.base44.app/login";
+export const LOGIN_URL = "https://members.jutaone.biz/login";
 
 export function Section({
   id,
