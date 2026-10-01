@@ -148,7 +148,16 @@ function Index() {
             </div>
           </div>
           <div className="relative flex h-[460px] min-h-[400px] items-center justify-center">
-            <img src="/logo-jutaone-footer.svg" alt="Logo JUTAONE" className="h-auto w-full max-w-[520px] object-contain" />
+            <img
+              src="/logo-jutaone-header.svg"
+              alt="Logo JUTAONE"
+              width={600}
+              height={140}
+              className="block h-auto w-full max-w-[520px] object-contain"
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+              }}
+            />
           </div>
         </div>
         <div className="hairline mx-auto max-w-6xl" />
