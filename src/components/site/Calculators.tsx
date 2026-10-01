@@ -436,6 +436,24 @@ const LEVELS = [
   ...Array.from({ length: 16 }, (_, i) => ({ level: `L${i + 5}`, rate: 0.01 })),
 ];
 
+function compactIdNumber(value: number, currency = false) {
+  if (!Number.isFinite(value)) return currency ? "Rp0" : "0";
+  const abs = Math.abs(value);
+  const units = [
+    { value: 1_000_000_000_000, suffix: "T" },
+    { value: 1_000_000_000, suffix: "M" },
+    { value: 1_000_000, suffix: "Jt" },
+    { value: 1_000, suffix: "K" },
+  ];
+  const unit = units.find((item) => abs >= item.value);
+  if (!unit) return (currency ? "Rp" : "") + num(value, 0);
+  const scaled = value / unit.value;
+  const formatted = new Intl.NumberFormat("id-ID", {
+    maximumFractionDigits: Math.abs(scaled) < 10 ? 2 : 1,
+  }).format(scaled);
+  return (currency ? "Rp" : "") + formatted + unit.suffix;
+}
+
 export function AffiliateCalculator() {
   const [pin, setPin] = useState(1_000);
   const [perLevel, setPerLevel] = useState(3);
@@ -481,7 +499,7 @@ export function AffiliateCalculator() {
             Jumlah ahli hingga L20
           </p>
           <p className="mt-2 font-display text-2xl font-bold text-silver sm:text-3xl">
-            {num(totalMembers, 0)}
+            {compactIdNumber(totalMembers)}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">Tidak termasuk ahli yang membuat simulasi</p>
         </div>
@@ -490,7 +508,7 @@ export function AffiliateCalculator() {
             Total bonus simulasi (L1–L20)
           </p>
           <p className="mt-2 font-display text-2xl font-bold text-gold-gradient sm:text-3xl">
-            {idr(totalBonus)}
+            {compactIdNumber(totalBonus, true)}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">Anggaran bonus berdasarkan hirarki sempurna</p>
         </div>
@@ -506,8 +524,8 @@ export function AffiliateCalculator() {
               <span className="font-bold text-silver">{row.level}</span>
               <span className="text-gold">{num(row.rate * 100, 0)}%</span>
             </div>
-            <p className="mt-1 text-muted-foreground">{num(row.members, 0)} ahli</p>
-            <p className="mt-1 font-medium text-foreground">{idr(row.commission)}</p>
+            <p className="mt-1 text-muted-foreground">{compactIdNumber(row.members)} ahli</p>
+            <p className="mt-1 break-words font-medium text-foreground">{compactIdNumber(row.commission, true)}</p>
           </div>
         ))}
       </div>
