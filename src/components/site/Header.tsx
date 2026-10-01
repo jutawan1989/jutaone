@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { GoldButton, LOGIN_URL } from "./primitives";
 
+const REGISTER_URL = "https://members.jutaone.biz/register";
+
 const NAV = [
   { href: "#tentang", label: "Tentang" },
   { href: "#ai", label: "AI" },
@@ -47,7 +49,7 @@ export function Header() {
           >
             Masuk
           </a>
-          <GoldButton href={LOGIN_URL} className="px-5 py-2 text-xs">
+          <GoldButton href={REGISTER_URL} className="px-5 py-2 text-xs">
             Gabung Sekarang
           </GoldButton>
         </div>
@@ -79,7 +81,7 @@ export function Header() {
             ))}
           </div>
           <div className="mt-5 flex flex-col gap-3">
-            <GoldButton href={LOGIN_URL}>Gabung Sekarang</GoldButton>
+            <GoldButton href={REGISTER_URL}>Gabung Sekarang</GoldButton>
             <a
               href={LOGIN_URL}
               target="_blank"
