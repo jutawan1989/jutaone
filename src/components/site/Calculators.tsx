@@ -1,28 +1,203 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, NumberField, SimLabel, idr, num } from "./primitives";
 
-export function TrendChart({ color = "gold", seed = 1 }: { color?: "gold" | "silver"; seed?: number }) {
-  const points = Array.from({ length: 24 }, (_, i) => {
-    const wave = Math.sin((i + seed * 3) / 3) * 12 + Math.sin((i + seed) / 1.7) * 5;
-    return { x: ((i / 23) * 100).toFixed(2), y: (55 - i * 1.1 + wave).toFixed(2) };
-  });
-  const path = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
+type Metal = "gold" | "silver";
+type Range = "day" | "week" | "month" | "year";
+
+type XausSpot = {
+  xau?: { price?: number; currency?: string; unit?: string };
+  updated_at?: string;
+  price_as_of?: string;
+  stale?: boolean;
+  data_state?: { status?: string; as_of?: string; age_seconds?: number };
+};
+
+type XausHistory = {
+  points?: Array<{ d?: string; c?: number; h?: number; l?: number }>;
+};
+
+type XausIntraday = {
+  points?: Array<{ t?: string | number; p?: number }>;
+  data_state?: { status?: string; as_of?: string; age_seconds?: number };
+};
+
+const API = "https://xaus.com/api/v1";
+
+function formatTime(value?: string | number) {
+  if (!value) return "Waktu tidak tersedia";
+  const date = typeof value === "number" ? new Date(value > 1e12 ? value : value * 1000) : new Date(value);
+  if (Number.isNaN(date.getTime())) return "Waktu tidak tersedia";
+  return new Intl.DateTimeFormat("id-ID", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+    timeZone: "Asia/Jakarta",
+  }).format(date) + " WIB";
+}
+
+export function TrendChart({ color = "gold", seed = 1 }: { color?: Metal; seed?: number }) {
+  const [range, setRange] = useState<Range>("day");
+  const [spot, setSpot] = useState<number | null>(null);
+  const [spotTime, setSpotTime] = useState<string | undefined>();
+  const [stale, setStale] = useState(false);
+  const [series, setSeries] = useState<Array<{ t: number; p: number }>>([]);
+  const [status, setStatus] = useState<"loading" | "live" | "stale" | "error">("loading");
+
+  useEffect(() => {
+    if (color !== "gold") return;
+    let cancelled = false;
+    const loadSpot = async () => {
+      try {
+        const response = await fetch(`${API}/spot?currency=IDR&unit=gram&compact=1`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = (await response.json()) as XausSpot;
+        const price = data.xau?.price;
+        if (!Number.isFinite(price) || !price || data.xau?.currency !== "IDR" || data.xau?.unit !== "gram") {
+          throw new Error("Respons harga emas IDR tidak valid");
+        }
+        if (cancelled) return;
+        setSpot(price);
+        setSpotTime(data.price_as_of ?? data.data_state?.as_of ?? data.updated_at);
+        const isStale = Boolean(data.stale || data.data_state?.status === "stale");
+        setStale(isStale);
+        setStatus(isStale ? "stale" : "live");
+      } catch {
+        if (!cancelled) setStatus("error");
+      }
+    };
+    void loadSpot();
+    const timer = window.setInterval(() => void loadSpot(), 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [color]);
+
+  useEffect(() => {
+    if (color !== "gold") return;
+    let cancelled = false;
+    const loadSeries = async () => {
+      try {
+        let points: Array<{ t: number; p: number }> = [];
+        if (range === "day") {
+          const response = await fetch(`${API}/intraday?symbol=xau&hours=24`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = (await response.json()) as XausIntraday;
+          points = (data.points ?? []).flatMap((point) => {
+            const t = typeof point.t === "number" ? (point.t > 1e12 ? point.t : point.t * 1000) : Date.parse(point.t ?? "");
+            return Number.isFinite(t) && Number.isFinite(point.p) && point.p! > 0 ? [{ t, p: point.p! }] : [];
+          });
+        } else {
+          const response = await fetch(`${API}/history`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = (await response.json()) as XausHistory;
+          const days = range === "week" ? 7 : range === "month" ? 30 : 365;
+          const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+          points = (data.points ?? []).flatMap((point) => {
+            const t = Date.parse(point.d ?? "");
+            return Number.isFinite(t) && t >= cutoff && Number.isFinite(point.c) && point.c! > 0
+              ? [{ t, p: point.c! }]
+              : [];
+          });
+          // History is XAU/USD. Convert each point using the current published USD/IDR FX rate.
+          const fxResponse = await fetch(`${API}/spot?currency=IDR&unit=gram&compact=1`, { cache: "no-store" });
+          if (!fxResponse.ok) throw new Error(`HTTP ${fxResponse.status}`);
+          const fxData = (await fxResponse.json()) as XausSpot & { spot_usd_oz?: number; fx_rate?: number };
+          const fxRate = fxData.fx_rate;
+          if (!Number.isFinite(fxRate) || !fxRate || !Number.isFinite(fxData.spot_usd_oz) || !fxData.spot_usd_oz) {
+            throw new Error("Kurs USD/IDR tidak tersedia");
+          }
+          const usdOzNow = fxData.spot_usd_oz;
+          const currentIdrGram = fxData.xau?.price;
+          const idrPerUsd = currentIdrGram && usdOzNow ? currentIdrGram * 31.1034768 / usdOzNow : fxRate;
+          points = points.map((point) => ({ ...point, p: point.p * idrPerUsd }));
+        }
+        if (cancelled) return;
+        setSeries(points.sort((a, b) => a.t - b.t));
+      } catch {
+        if (!cancelled) setSeries([]);
+      }
+    };
+    void loadSeries();
+    return () => {
+      cancelled = true;
+    };
+  }, [color, range]);
+
   const stroke = color === "gold" ? "var(--gold)" : "var(--silver)";
+  const visible = color === "gold" ? series : [];
+  const min = visible.length ? Math.min(...visible.map((p) => p.p)) : 0;
+  const max = visible.length ? Math.max(...visible.map((p) => p.p)) : 0;
+  const span = max - min || Math.max(max * 0.01, 1);
+  const chartPoints = visible.map((p, i) => ({
+    x: visible.length === 1 ? 50 : (i / (visible.length - 1)) * 100,
+    y: 70 - ((p.p - min) / span) * 55,
+  }));
+  const path = chartPoints.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ");
+  const fillId = `fill-${color}-${seed}`;
+  const labels: { value: Range; label: string }[] = [
+    { value: "day", label: "Harian" },
+    { value: "week", label: "Mingguan" },
+    { value: "month", label: "Bulanan" },
+    { value: "year", label: "Tahunan" },
+  ];
+
+  if (color !== "gold") {
+    const points = Array.from({ length: 24 }, (_, i) => {
+      const wave = Math.sin((i + seed * 3) / 3) * 12 + Math.sin((i + seed) / 1.7) * 5;
+      return { x: ((i / 23) * 100).toFixed(2), y: (55 - i * 1.1 + wave).toFixed(2) };
+    });
+    const silverPath = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
+    return (
+      <svg viewBox="0 0 100 80" preserveAspectRatio="none" className="h-40 w-full">
+        <defs><linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={stroke} stopOpacity="0.35" /><stop offset="100%" stopColor={stroke} stopOpacity="0" /></linearGradient></defs>
+        {[20, 40, 60].map((y) => <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="var(--border)" strokeWidth="0.3" />)}
+        <path d={`${silverPath} L100,80 L0,80 Z`} fill={`url(#${fillId})`} />
+        <path d={silverPath} fill="none" stroke={stroke} strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+      </svg>
+    );
+  }
 
   return (
-    <svg viewBox="0 0 100 80" preserveAspectRatio="none" className="h-40 w-full">
-      <defs>
-        <linearGradient id={`fill-${color}-${seed}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={stroke} stopOpacity="0.35" />
-          <stop offset="100%" stopColor={stroke} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {[20, 40, 60].map((y) => (
-        <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="var(--border)" strokeWidth="0.3" />
-      ))}
-      <path d={`${path} L100,80 L0,80 Z`} fill={`url(#fill-${color}-${seed})`} />
-      <path d={path} fill="none" stroke={stroke} strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
-    </svg>
+    <div>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className={`h-2 w-2 rounded-full ${status === "live" ? "bg-emerald-400" : status === "stale" ? "bg-amber-400" : "bg-muted-foreground"}`} />
+          <span className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+            {status === "live" ? "LIVE" : status === "stale" ? "DATA TERAKHIR (KEDALUWARSA)" : status === "error" ? "DATA TIDAK TERSEDIA" : "MEMUAT DATA"}
+          </span>
+        </div>
+        <span className="text-[11px] text-muted-foreground">Sumber: XAUS · IDR/gram</span>
+      </div>
+      <div className="mb-3">
+        {spot !== null ? (
+          <p className="font-display text-2xl font-bold text-gold-gradient">{idr(spot)} <span className="font-sans text-xs font-medium text-muted-foreground">/ gram</span></p>
+        ) : (
+          <p className="text-sm text-muted-foreground">{status === "error" ? "Harga emas langsung gagal dimuat." : "Mengambil harga emas langsung…"}</p>
+        )}
+        <p className="mt-1 text-[11px] text-muted-foreground">Data per: {formatTime(spotTime)}</p>
+      </div>
+      {visible.length > 0 ? (
+        <svg viewBox="0 0 100 80" preserveAspectRatio="none" className="h-40 w-full" role="img" aria-label="Grafik harga emas aktual dalam Rupiah per gram">
+          <defs><linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={stroke} stopOpacity="0.35" /><stop offset="100%" stopColor={stroke} stopOpacity="0" /></linearGradient></defs>
+          {[20, 40, 60].map((y) => <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="var(--border)" strokeWidth="0.3" />)}
+          <path d={`${path} L100,80 L0,80 Z`} fill={`url(#${fillId})`} />
+          <path d={path} fill="none" stroke={stroke} strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+        </svg>
+      ) : (
+        <div className="flex h-40 items-center justify-center rounded-lg border border-dashed border-border text-xs text-muted-foreground">
+          {range === "day" ? "Belum ada siri intraday yang tersedia." : "Data sejarah untuk tempoh ini tidak tersedia."}
+        </div>
+      )}
+      <div className="mt-4 grid grid-cols-4 gap-2 text-center text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+        {labels.map((item) => (
+          <button key={item.value} type="button" onClick={() => setRange(item.value)} aria-pressed={range === item.value}
+            className={`rounded-lg border py-2 transition-colors ${range === item.value ? "border-gold bg-gold/10 text-gold" : "border-border bg-background/40 hover:border-gold/50"}`}>
+            {item.label}
+          </button>
+        ))}
+      </div>
+      {stale && <p className="mt-2 text-[11px] text-amber-400">API mengembalikan data terakhir yang tersedia; harga ini bukan bacaan baharu.</p>}
+    </div>
   );
 }
 
