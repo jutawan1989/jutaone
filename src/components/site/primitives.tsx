@@ -98,6 +98,7 @@ export function NumberField({
   suffix,
   step = 1,
   min = 0,
+  labelMinHeight = false,
 }: {
   label: string;
   value: number;
@@ -105,10 +106,11 @@ export function NumberField({
   suffix?: string;
   step?: number;
   min?: number;
+  labelMinHeight?: boolean;
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <span className={`mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground ${labelMinHeight ? "min-h-8" : ""}`}>
         {label}
       </span>
       <div className="flex items-center gap-2 rounded-xl border border-input bg-background/60 px-4 py-3">
