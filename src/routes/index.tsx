@@ -241,13 +241,6 @@ function Index() {
               <SimLabel />
             </div>
             <TrendChart color="gold" seed={2} />
-            <div className="mt-4 grid grid-cols-4 gap-2 text-center text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-              {["Harian", "Mingguan", "Bulanan", "Tahunan"].map((p) => (
-                <div key={p} className="rounded-lg border border-border bg-background/40 py-2">
-                  {p}
-                </div>
-              ))}
-            </div>
             <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
               {["Rerata Bergerak", "RSI", "Level Sokongan"].map((i) => (
                 <div key={i} className="rounded-lg border border-border bg-background/40 px-3 py-2">
