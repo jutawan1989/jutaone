@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs>
+<radialGradient id="bg" cx="78%" cy="30%" r="90%"><stop offset="0" stop-color="#183a63"/><stop offset=".38" stop-color="#071525"/><stop offset="1" stop-color="#02060d"/></radialGradient>
+<linearGradient id="gold" x1="0" x2="1"><stop stop-color="#fff0a6"/><stop offset=".35" stop-color="#d6a62a"/><stop offset=".7" stop-color="#fff1a0"/><stop offset="1" stop-color="#9a6a10"/></linearGradient>
+<linearGradient id="silver" x1="0" x2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#9fa9b4"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<circle cx="925" cy="225" r="178" fill="#07111e" stroke="#55bfff" stroke-width="7" opacity=".95"/>
+<path d="M760 220c65-90 180-135 290-85M785 295c105 42 230 8 300-70M850 92c-10 100 10 210 80 300M965 62c-42 90-28 210 35 330" fill="none" stroke="#d8a52d" stroke-opacity=".7" stroke-width="2"/>
+<g fill="#ffc94d" filter="url(#glow)"><circle cx="830" cy="165" r="4"/><circle cx="930" cy="255" r="5"/><circle cx="1030" cy="170" r="4"/><circle cx="1090" cy="290" r="4"/></g>
+<g opacity=".5" stroke="#d6a62a" stroke-width="3"><path d="M0 520 Q350 420 700 510 T1200 470"/><path d="M0 550 Q360 450 720 540 T1200 500"/></g>
+<g transform="translate(75 115)">
+<path d="M0 105L82 25h65l-47 56 65-1-105 100H0l52-64z" fill="url(#gold)"/>
+<path d="M30 178L178 35" stroke="url(#silver)" stroke-width="12" stroke-linecap="round"/>
+<path d="M103 163l76-103" stroke="url(#silver)" stroke-width="10" stroke-linecap="round"/>
+</g>
+<text x="70" y="345" font-family="Arial,Helvetica,sans-serif" font-size="96" font-weight="800" letter-spacing="3" fill="url(#gold)">JUTA<tspan fill="url(#silver)">ONE</tspan></text>
+<text x="74" y="405" font-family="Arial,Helvetica,sans-serif" font-size="32" font-weight="500" fill="#f1c85a">The Future of Gold &amp; Silver Intelligence.</text>
+<text x="76" y="450" font-family="Arial,Helvetica,sans-serif" font-size="20" letter-spacing="7" fill="#e9edf2">AI-POWERED PRECIOUS METALS ANALYSIS</text>
+<rect x="72" y="495" width="365" height="64" rx="32" fill="#050a12" stroke="#d6a62a" stroke-width="2"/>
+<text x="255" y="537" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700" letter-spacing="2" fill="#f7d56d">JUTAONE.BIZ</text>
+<g transform="translate(1090 535)"><rect x="0" y="0" width="48" height="9" rx="4" fill="url(#gold)"/><rect x="0" y="14" width="36" height="9" rx="4" fill="url(#silver)"/><rect x="0" y="28" width="24" height="9" rx="4" fill="url(#gold)"/></g>
+</svg>
