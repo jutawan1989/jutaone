@@ -90,10 +90,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Jelajahi ekosistem AI, analisis emas dan perak, potensi ETA serta peluang afiliasi JUTAONE.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://jutaone.biz/logo-jutaone.png" },
+      { property: "og:image", content: "https://jutaone.biz/og-jutaone.png" },
       { property: "og:image:alt", content: "JUTAONE — The Future of Gold & Silver Intelligence" },
       { property: "og:url", content: "https://jutaone.biz/" },
-      { name: "twitter:image", content: "https://jutaone.biz/logo-jutaone.png" },
+      { name: "twitter:image", content: "https://jutaone.biz/og-jutaone.png" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
