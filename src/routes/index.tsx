@@ -378,12 +378,17 @@ function Index() {
               Visual ini menggambarkan struktur jaringan secara umum, bukan jumlah anggota nyata.
               Komisi tidak dihitung dua kali untuk penjualan yang sama.
             </p>
-            <div className="mt-8 flex min-h-[250px] items-center justify-center border-t border-border/60 pt-6">
-              <div className="flex flex-col items-center">
+            <div className="mt-8 flex min-h-[90px] items-center justify-center border-t border-border/60 pt-6">
+              <div className="flex w-full flex-col items-center">
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                   Iklan
                 </p>
-                <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
+                <div className="hidden w-full justify-center md:flex">
+                  <AdsterraBanner id="adsterra-banner-728x90-jutaone" keyValue="fb8ddad9c7bd0acffe399516bd9c0321" width={728} height={90} />
+                </div>
+                <div className="flex w-full justify-center md:hidden">
+                  <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
+                </div>
               </div>
             </div>
           </Card>
