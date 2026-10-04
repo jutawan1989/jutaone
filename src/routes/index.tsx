@@ -258,6 +258,18 @@ function Index() {
         <MarketAnalyst />
       </Section>
 
+      {/* ADSTERRA */}
+      <section aria-label="Iklan" className="border-y border-border/60 bg-background/30">
+        <div className="mx-auto flex max-w-6xl flex-col items-center px-5 py-8">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            Iklan
+          </p>
+          <div className="mt-5 flex min-h-[250px] w-full items-center justify-center">
+            <AdsterraBanner />
+          </div>
+        </div>
+      </section>
+
       {/* EMAS */}
       <Section
         id="emas"
