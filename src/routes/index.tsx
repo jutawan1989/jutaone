@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Header } from "@/components/site/Header";
 import { MarketAnalyst } from "@/components/site/MarketAnalyst";
 import { EarthHero } from "@/components/site/EarthHero";
@@ -19,6 +20,63 @@ import {
 } from "@/components/site/primitives";
 
 const LOGO_URL = "/logo-jutaone-mark.png";
+
+function AdsterraAds() {
+  useEffect(() => {
+    const nativeHost = document.getElementById("adsterra-native-jutaone");
+    const bannerHost = document.getElementById("adsterra-banner-300x250-jutaone");
+    if (!nativeHost || !bannerHost) return;
+
+    nativeHost.innerHTML = "";
+    bannerHost.innerHTML = "";
+
+    const nativeScript = document.createElement("script");
+    nativeScript.async = true;
+    nativeScript.setAttribute("data-cfasync", "false");
+    nativeScript.src = "https://bauval.org/21/6f784aa6acf075e8a702b261918ebc63";
+    nativeHost.appendChild(nativeScript);
+
+    const bannerOptions = document.createElement("script");
+    bannerOptions.text = [
+      "var atOptions = {",
+      "'key' : 'dd858710f3683f83b56510194e12be28',",
+      "'format' : 'iframe',",
+      "'height' : 250,",
+      "'width' : 300,",
+      "'params' : {}",
+      "};",
+    ].join("\n");
+    bannerHost.appendChild(bannerOptions);
+
+    const bannerScript = document.createElement("script");
+    bannerScript.src = "https://bauval.org/22/dd858710f3683f83b56510194e12be28";
+    bannerHost.appendChild(bannerScript);
+
+    return () => {
+      nativeHost.innerHTML = "";
+      bannerHost.innerHTML = "";
+    };
+  }, []);
+
+  return (
+    <section aria-label="Iklan" className="border-y border-border/60 bg-background/30">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-5 py-10">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+          Iklan
+        </p>
+        <div className="grid w-full items-start justify-center gap-8 md:grid-cols-2">
+          <div className="flex min-h-[250px] items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-background/20 p-2">
+            <div id="adsterra-native-jutaone" />
+          </div>
+          <div className="flex min-h-[250px] items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-background/20 p-2">
+            <div id="adsterra-banner-300x250-jutaone" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -218,6 +276,9 @@ function Index() {
         </div>
         <MarketAnalyst />
       </Section>
+
+      {/* ADSTERra */}
+      <AdsterraAds />
 
       {/* EMAS */}
       <Section
