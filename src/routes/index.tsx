@@ -298,7 +298,7 @@ function Index() {
                   Iklan
                 </p>
                 <div className="hidden w-full justify-center md:flex">
-                  <AdsterraBanner id="adsterra-banner-728x90-jutaone" keyValue="fb8ddad9c7bd0acffe399516bd9c0321" width={728} height={90} fallback={{ keyValue: "dd858710f3683f83b56510194e12be28", width: 300, height: 250 }} />
+                  <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
                 </div>
                 <div className="flex w-full justify-center md:hidden">
                   <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
