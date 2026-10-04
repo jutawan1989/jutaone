@@ -62,10 +62,15 @@ function AdsterraBanner({
 
   return (
     <div
-      id={id}
-      className="flex items-center justify-center overflow-hidden"
-      style={{ minHeight: height, minWidth: width }}
-    />
+      className="flex w-full justify-center overflow-hidden"
+      style={{ minHeight: height }}
+    >
+      <div
+        id={id}
+        className="flex shrink-0 items-center justify-center overflow-hidden max-[520px]:origin-top max-[520px]:scale-[0.68]"
+        style={{ width, height }}
+      />
+    </div>
   );
 }
 
