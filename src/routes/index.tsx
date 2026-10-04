@@ -52,7 +52,10 @@ function Adsterra160x300() {
   }, []);
 
   return (
-    <div className="mt-8 flex min-h-[300px] justify-center overflow-hidden" aria-label="Iklan">
+    <div className="mt-8 flex flex-col items-center overflow-hidden" aria-label="Iklan Sponsor">
+      <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        Iklan Sponsor
+      </p>
       <div id="adsterra-160x300" className="h-[300px] w-[160px]" />
     </div>
   );
