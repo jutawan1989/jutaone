@@ -22,7 +22,7 @@ import {
 const LOGO_URL = "/logo-jutaone-mark.png";
 
 
-function AdsterraAds() {
+function AdsterraBanner() {
   useEffect(() => {
     const bannerHost = document.getElementById("adsterra-banner-300x250-jutaone");
     if (!bannerHost) return;
@@ -51,19 +51,10 @@ function AdsterraAds() {
   }, []);
 
   return (
-    <section aria-label="Iklan" className="border-y border-border/60 bg-background/30">
-      <div className="mx-auto flex max-w-6xl flex-col items-center px-5 py-8">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Iklan
-        </p>
-        <div className="mt-5 flex min-h-[250px] w-full items-center justify-center">
-          <div
-            id="adsterra-banner-300x250-jutaone"
-            className="flex min-h-[250px] min-w-[300px] items-center justify-center overflow-hidden"
-          />
-        </div>
-      </div>
-    </section>
+    <div
+      id="adsterra-banner-300x250-jutaone"
+      className="flex min-h-[250px] min-w-[300px] items-center justify-center overflow-hidden"
+    />
   );
 }
 
@@ -267,9 +258,6 @@ function Index() {
         <MarketAnalyst />
       </Section>
 
-      {/* ADSTERra */}
-      <AdsterraAds />
-
       {/* EMAS */}
       <Section
         id="emas"
@@ -374,6 +362,14 @@ function Index() {
               Visual ini menggambarkan struktur jaringan secara umum, bukan jumlah anggota nyata.
               Komisi tidak dihitung dua kali untuk penjualan yang sama.
             </p>
+            <div className="mt-8 flex min-h-[250px] items-center justify-center border-t border-border/60 pt-6">
+              <div className="flex flex-col items-center">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                  Iklan
+                </p>
+                <AdsterraBanner />
+              </div>
+            </div>
           </Card>
           <AffiliateCalculator />
         </div>
