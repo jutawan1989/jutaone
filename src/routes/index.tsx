@@ -21,9 +21,9 @@ import {
 
 const LOGO_URL = "/logo-jutaone-mark.png";
 
-function Adsterra300x250({ slot }: { slot: string }) {
+function Adsterra300x250() {
   useEffect(() => {
-    const container = document.getElementById(`adsterra-300x250-${slot}`);
+    const container = document.getElementById("adsterra-300x250");
     if (!container || container.dataset.loaded === "true") return;
 
     container.dataset.loaded = "true";
@@ -45,18 +45,14 @@ function Adsterra300x250({ slot }: { slot: string }) {
 
     container.appendChild(config);
     container.appendChild(loader);
-
-    return () => {
-      container.innerHTML = "";
-    };
-  }, [slot]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center overflow-hidden" aria-label="Iklan Sponsor">
       <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
         IKLAN SPONSOR
       </p>
-      <div id={`adsterra-300x250-${slot}`} className="h-[250px] w-[300px]" />
+      <div id="adsterra-300x250" className="h-[250px] w-[300px]" />
     </div>
   );
 }
@@ -300,12 +296,9 @@ function Index() {
         <MarketAnalyst />
       </Section>
 
-      {/* ADSTERRA 300x250 — two sponsor ads between AI and Gold */}
+      {/* ADSTERRA 300x250 — single sponsor ad between AI and Gold */}
       <div className="mx-auto max-w-6xl px-5 py-10 sm:py-14">
-        <div className="flex flex-col items-center justify-center gap-8 lg:flex-row lg:gap-10">
-          <Adsterra300x250 slot="left" />
-          <Adsterra300x250 slot="right" />
-        </div>
+        <Adsterra300x250 />
       </div>
 
       {/* EMAS */}
