@@ -274,14 +274,14 @@ function Index() {
         <MarketAnalyst />
       </Section>
 
-      {/* ADSTERRA */}
+      {/* ADSTERRA 468x60 */}
       <section aria-label="Iklan" className="border-y border-border/60 bg-background/30">
-        <div className="mx-auto flex max-w-6xl flex-col items-center px-5 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center px-5 py-5">
           <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
             Iklan
           </p>
-          <div className="mt-5 flex min-h-[250px] w-full items-center justify-center">
-            <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
+          <div className="mt-3 flex w-full items-center justify-center">
+            <AdsterraBanner id="adsterra-banner-468x60-jutaone" keyValue="cc9bbdcf8856ca1f70ee794be2a51e6a" width={468} height={60} />
           </div>
         </div>
       </section>
@@ -395,7 +395,7 @@ function Index() {
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                   Iklan
                 </p>
-                <AdsterraBanner id="adsterra-banner-468x60-jutaone" keyValue="cc9bbdcf8856ca1f70ee794be2a51e6a" width={468} height={60} />
+                <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
               </div>
             </div>
           </Card>
