@@ -298,7 +298,10 @@ function Index() {
                   Iklan
                 </p>
                 <div className="hidden w-full justify-center md:flex">
-                  <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
+                  <div className="flex flex-col items-center gap-4">
+  <AdsterraBanner id="adsterra-banner-320x50-jutaone-top" keyValue="e3c03a15e2a0a2becf52c7b74ad3fbcd" width={320} height={50} />
+  <AdsterraBanner id="adsterra-banner-320x50-jutaone-bottom" keyValue="e3c03a15e2a0a2becf52c7b74ad3fbcd" width={320} height={50} />
+</div>
                 </div>
                 <div className="flex w-full justify-center md:hidden">
                   <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
