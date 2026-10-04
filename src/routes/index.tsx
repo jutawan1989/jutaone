@@ -21,6 +21,46 @@ import {
 
 const LOGO_URL = "/logo-jutaone-mark.png";
 
+function Adsterra300x250({ slot }: { slot: string }) {
+  useEffect(() => {
+    const container = document.getElementById(`adsterra-300x250-${slot}`);
+    if (!container || container.dataset.loaded === "true") return;
+
+    container.dataset.loaded = "true";
+
+    const config = document.createElement("script");
+    config.textContent = `
+      atOptions = {
+        'key' : 'dd858710f3683f83b56510194e12be28',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    `;
+
+    const loader = document.createElement("script");
+    loader.src = "https://bauval.org/22/dd858710f3683f83b56510194e12be28";
+    loader.async = false;
+
+    container.appendChild(config);
+    container.appendChild(loader);
+
+    return () => {
+      container.innerHTML = "";
+    };
+  }, [slot]);
+
+  return (
+    <div className="flex flex-col items-center overflow-hidden" aria-label="Iklan Sponsor">
+      <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        IKLAN SPONSOR
+      </p>
+      <div id={`adsterra-300x250-${slot}`} className="h-[250px] w-[300px]" />
+    </div>
+  );
+}
+
 function Adsterra160x300() {
   useEffect(() => {
     const container = document.getElementById("adsterra-160x300");
@@ -259,6 +299,14 @@ function Index() {
         </div>
         <MarketAnalyst />
       </Section>
+
+      {/* ADSTERRA 300x250 — two sponsor ads between AI and Gold */}
+      <div className="mx-auto max-w-6xl px-5 py-10 sm:py-14">
+        <div className="flex flex-col items-center justify-center gap-8 lg:flex-row lg:gap-10">
+          <Adsterra300x250 slot="left" />
+          <Adsterra300x250 slot="right" />
+        </div>
+      </div>
 
       {/* EMAS */}
       <Section
