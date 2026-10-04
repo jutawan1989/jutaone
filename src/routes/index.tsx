@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Header } from "@/components/site/Header";
 import { MarketAnalyst } from "@/components/site/MarketAnalyst";
 import { EarthHero } from "@/components/site/EarthHero";
@@ -20,8 +21,42 @@ import {
 
 const LOGO_URL = "/logo-jutaone-mark.png";
 
+function Adsterra160x300() {
+  useEffect(() => {
+    const container = document.getElementById("adsterra-160x300");
+    if (!container || container.dataset.loaded === "true") return;
 
+    container.dataset.loaded = "true";
 
+    const config = document.createElement("script");
+    config.textContent = `
+      atOptions = {
+        'key' : 'e0b5542149da26cd9758171384d0cee6',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
+      };
+    `;
+
+    const loader = document.createElement("script");
+    loader.src = "https://bauval.org/22/e0b5542149da26cd9758171384d0cee6";
+    loader.async = true;
+
+    container.appendChild(config);
+    container.appendChild(loader);
+
+    return () => {
+      container.innerHTML = "";
+    };
+  }, []);
+
+  return (
+    <div className="mt-8 flex min-h-[300px] justify-center overflow-hidden" aria-label="Iklan">
+      <div id="adsterra-160x300" className="h-[300px] w-[160px]" />
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -326,6 +361,7 @@ function Index() {
               Visual ini menggambarkan struktur jaringan secara umum, bukan jumlah anggota nyata.
               Komisi tidak dihitung dua kali untuk penjualan yang sama.
             </p>
+            <Adsterra160x300 />
           </Card>
           <AffiliateCalculator />
         </div>
