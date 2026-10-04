@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
 import { Header } from "@/components/site/Header";
 import { MarketAnalyst } from "@/components/site/MarketAnalyst";
 import { EarthHero } from "@/components/site/EarthHero";
@@ -22,75 +21,6 @@ import {
 const LOGO_URL = "/logo-jutaone-mark.png";
 
 
-function AdsterraBanner({
-  id,
-  keyValue,
-  width,
-  height,
-  fallback,
-}: {
-  id: string;
-  keyValue: string;
-  width: number;
-  height: number;
-  fallback?: { keyValue: string; width: number; height: number };
-}) {
-  useEffect(() => {
-    const bannerHost = document.getElementById(id);
-    if (!bannerHost) return;
-
-    bannerHost.innerHTML = "";
-
-    const loadBanner = (target: {
-      keyValue: string;
-      width: number;
-      height: number;
-    }) => {
-      bannerHost.innerHTML = "";
-      const bannerOptions = document.createElement("script");
-      bannerOptions.text = [
-        "var atOptions = {",
-        `'key' : '${target.keyValue}',`,
-        "'format' : 'iframe',",
-        `'height' : ${target.height},`,
-        `'width' : ${target.width},`,
-        "'params' : {}",
-        "};",
-      ].join("\n");
-      bannerHost.appendChild(bannerOptions);
-
-      const bannerScript = document.createElement("script");
-      bannerScript.src = `https://bauval.org/22/${target.keyValue}`;
-      bannerHost.appendChild(bannerScript);
-    };
-
-    loadBanner({ keyValue, width, height });
-
-    const fallbackTimer = fallback
-      ? window.setTimeout(() => {
-          if (!bannerHost.querySelector("iframe")) loadBanner(fallback);
-        }, 5000)
-      : undefined;
-
-    return () => {
-      if (fallbackTimer) window.clearTimeout(fallbackTimer);
-      bannerHost.innerHTML = "";
-    };
-  }, [id, keyValue, width, height, fallback]);
-
-  return (
-    <div
-      className="flex w-full justify-center overflow-hidden"
-      style={{ minHeight: height }}
-    >
-      <div
-        id={id}
-        className="flex shrink-0 items-center justify-center overflow-hidden max-[520px]:origin-top max-[520px]:scale-[0.68]"
-        style={{ width, height }}
-      />
-    </div>
-  );
-}
 
 
 export const Route = createFileRoute("/")({
@@ -292,22 +222,6 @@ function Index() {
         <MarketAnalyst />
       </Section>
 
-            <div className="mt-8 flex min-h-[90px] items-center justify-center border-t border-border/60 pt-6">
-              <div className="flex w-full flex-col items-center">
-                <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                  Iklan
-                </p>
-                <div className="hidden w-full justify-center md:flex">
-                  <div className="flex flex-col items-center gap-4">
-  <AdsterraBanner id="adsterra-banner-320x50-jutaone-top" keyValue="e3c03a15e2a0a2becf52c7b74ad3fbcd" width={320} height={50} />
-  <AdsterraBanner id="adsterra-banner-320x50-jutaone-bottom" keyValue="e3c03a15e2a0a2becf52c7b74ad3fbcd" width={320} height={50} />
-</div>
-                </div>
-                <div className="flex w-full justify-center md:hidden">
-                  <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
-                </div>
-              </div>
-            </div>
       {/* EMAS */}
       <Section
         id="emas"
