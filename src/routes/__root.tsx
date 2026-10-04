@@ -131,6 +131,16 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <script type="text/javascript">
+          {[
+            "var infolinks_pid = 3448363;",
+            "var infolinks_wsid = 0;",
+          ].join("\n")}
+        </script>
+        <script
+          type="text/javascript"
+          src="https://resources.infolinks.com/js/infolinks_main.js"
+        />
         <Scripts />
       </body>
     </html>
