@@ -23,6 +23,11 @@ type XausIntraday = {
   data_state?: { status?: string; as_of?: string; age_seconds?: number };
 };
 
+type XausChart = {
+  points?: Array<{ t?: number; c?: number }>;
+  data_state?: { status?: string; as_of?: string; age_seconds?: number };
+};
+
 const API = "https://xaus.com/api/v1";
 
 function formatTime(value?: string | number) {
@@ -81,13 +86,14 @@ function GoldTrendChart({ color = "gold", seed = 1 }: { color?: Metal; seed?: nu
       try {
         let points: Array<{ t: number; p: number }> = [];
         if (range === "day") {
-          const response = await fetch(`${API}/intraday?symbol=xau&hours=24`, { cache: "no-store" });
+          const response = await fetch(`${API}/chart?symbol=xau&range=1d&interval=15m`, { cache: "no-store" });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const data = (await response.json()) as XausIntraday;
+          const data = (await response.json()) as XausChart;
           points = (data.points ?? []).flatMap((point) => {
-            const t = typeof point.t === "number" ? (point.t > 1e12 ? point.t : point.t * 1000) : Date.parse(point.t ?? "");
-            return Number.isFinite(t) && Number.isFinite(point.p) && point.p! > 0 ? [{ t, p: point.p! }] : [];
+            const t = typeof point.t === "number" ? (point.t > 1e12 ? point.t : point.t * 1000) : NaN;
+            return Number.isFinite(t) && Number.isFinite(point.c) && point.c! > 0 ? [{ t, p: point.c! }] : [];
           });
+          if (!points.length) throw new Error("Grafik emas harian belum tersedia");
         } else {
           const response = await fetch(`${API}/history`, { cache: "no-store" });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -251,10 +257,11 @@ function SilverLiveChart() {
       try {
         let raw: Array<{ t?: number; p?: number }> = [];
         if (range === "day") {
-          const response = await fetch(`${API}/intraday?symbol=xag&hours=24`, { cache: "no-store" });
+          const response = await fetch(`${API}/chart?symbol=silver&range=1d&interval=15m`, { cache: "no-store" });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const data = (await response.json()) as XausIntraday;
-          raw = data.points ?? [];
+          const data = (await response.json()) as XausChart;
+          raw = (data.points ?? []).map((point) => ({ t: point.t, p: point.c }));
+          if (!raw.length) throw new Error("Grafik perak harian belum tersedia");
         } else {
           const rangeMap: Record<Exclude<Range, "day">, string> = { week: "5d", month: "1mo", year: "1y" };
           const response = await fetch(`${API}/chart?symbol=silver&range=${rangeMap[range]}&interval=1d`, { cache: "no-store" });
