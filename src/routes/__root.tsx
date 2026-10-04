@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "google-adsense-account", content: "ca-pub-464554975790095" },
+      { name: "google-adsense-account", content: "ca-pub-4645549755790095" },
       { title: "JUTAONE — Ekosistem Kecerdasan Emas & Perak" },
       {
         name: "description",
@@ -125,7 +125,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-464554975790095"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4645549755790095"
           crossOrigin="anonymous"
         />
       </head>
