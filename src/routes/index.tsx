@@ -21,6 +21,41 @@ import {
 
 const LOGO_URL = "/logo-jutaone-mark.png";
 
+function Adsterra300x250() {
+  useEffect(() => {
+    const container = document.getElementById("adsterra-300x250");
+    if (!container || container.dataset.loaded === "true") return;
+    container.dataset.loaded = "true";
+
+    const config = document.createElement("script");
+    config.textContent = `
+      atOptions = {
+        'key' : 'dd858710f3683f83b56510194e12be28',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    `;
+
+    const loader = document.createElement("script");
+    loader.src = "https://bauval.org/22/dd858710f3683f83b56510194e12be28";
+    loader.async = false;
+
+    container.appendChild(config);
+    container.appendChild(loader);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center overflow-hidden" aria-label="Iklan Sponsor">
+      <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        IKLAN SPONSOR
+      </p>
+      <div id="adsterra-300x250" className="h-[250px] w-[300px]" />
+    </div>
+  );
+}
+
 function Adsterra160x300() {
   useEffect(() => {
     const container = document.getElementById("adsterra-160x300");
@@ -259,6 +294,11 @@ function Index() {
         </div>
         <MarketAnalyst />
       </Section>
+
+      {/* ADSTERRA 300x250 */}
+      <div className="mx-auto flex max-w-6xl justify-center px-5 py-10 sm:py-14">
+        <Adsterra300x250 />
+      </div>
 
       {/* EMAS */}
       <Section
