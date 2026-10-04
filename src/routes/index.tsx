@@ -52,7 +52,7 @@ function Adsterra160x300() {
   }, []);
 
   return (
-    <div className="mt-8 flex flex-col items-center overflow-hidden" aria-label="Iklan Sponsor">
+    <div className="mt-8 flex flex-col items-center overflow-hidden lg:mt-0 lg:flex-1 lg:justify-center" aria-label="Iklan Sponsor">
       <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
         Iklan Sponsor
       </p>
@@ -334,7 +334,7 @@ function Index() {
         subtitle="Program afiliasi JUTAONE mencakup hingga 20 level. Kadar komisi: L1 50%, L2 5%, L3 3%, L4 2% serta L5 sampai L20 masing-masing 1%, dihitung dari penjualan PIN yang memenuhi syarat."
       >
         <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
-          <Card>
+          <Card className="lg:flex lg:h-full lg:flex-col">
             <h3 className="text-lg font-bold uppercase">Struktur Jaringan</h3>
             <div className="mt-6 space-y-3">
               {[1, 2, 3, 4].map((lvl) => (
