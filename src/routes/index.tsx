@@ -22,9 +22,19 @@ import {
 const LOGO_URL = "/logo-jutaone-mark.png";
 
 
-function AdsterraBanner() {
+function AdsterraBanner({
+  id,
+  keyValue,
+  width,
+  height,
+}: {
+  id: string;
+  keyValue: string;
+  width: number;
+  height: number;
+}) {
   useEffect(() => {
-    const bannerHost = document.getElementById("adsterra-banner-300x250-jutaone");
+    const bannerHost = document.getElementById(id);
     if (!bannerHost) return;
 
     bannerHost.innerHTML = "";
@@ -32,28 +42,29 @@ function AdsterraBanner() {
     const bannerOptions = document.createElement("script");
     bannerOptions.text = [
       "var atOptions = {",
-      "'key' : 'dd858710f3683f83b56510194e12be28',",
+      `'key' : '${keyValue}',`,
       "'format' : 'iframe',",
-      "'height' : 250,",
-      "'width' : 300,",
+      `'height' : ${height},`,
+      `'width' : ${width},`,
       "'params' : {}",
       "};",
     ].join("\n");
     bannerHost.appendChild(bannerOptions);
 
     const bannerScript = document.createElement("script");
-    bannerScript.src = "https://bauval.org/22/dd858710f3683f83b56510194e12be28";
+    bannerScript.src = `https://bauval.org/22/${keyValue}`;
     bannerHost.appendChild(bannerScript);
 
     return () => {
       bannerHost.innerHTML = "";
     };
-  }, []);
+  }, [id, keyValue, width, height]);
 
   return (
     <div
-      id="adsterra-banner-300x250-jutaone"
-      className="flex min-h-[250px] min-w-[300px] items-center justify-center overflow-hidden"
+      id={id}
+      className="flex items-center justify-center overflow-hidden"
+      style={{ minHeight: height, minWidth: width }}
     />
   );
 }
@@ -265,7 +276,7 @@ function Index() {
             Iklan
           </p>
           <div className="mt-5 flex min-h-[250px] w-full items-center justify-center">
-            <AdsterraBanner />
+            <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
           </div>
         </div>
       </section>
@@ -379,7 +390,7 @@ function Index() {
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                   Iklan
                 </p>
-                <AdsterraBanner />
+                <AdsterraBanner id="adsterra-banner-468x60-jutaone" keyValue="cc9bbdcf8856ca1f70ee794be2a51e6a" width={468} height={60} />
               </div>
             </div>
           </Card>
