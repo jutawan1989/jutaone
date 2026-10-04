@@ -27,11 +27,13 @@ function AdsterraBanner({
   keyValue,
   width,
   height,
+  fallback,
 }: {
   id: string;
   keyValue: string;
   width: number;
   height: number;
+  fallback?: { keyValue: string; width: number; height: number };
 }) {
   useEffect(() => {
     const bannerHost = document.getElementById(id);
@@ -39,26 +41,42 @@ function AdsterraBanner({
 
     bannerHost.innerHTML = "";
 
-    const bannerOptions = document.createElement("script");
-    bannerOptions.text = [
-      "var atOptions = {",
-      `'key' : '${keyValue}',`,
-      "'format' : 'iframe',",
-      `'height' : ${height},`,
-      `'width' : ${width},`,
-      "'params' : {}",
-      "};",
-    ].join("\n");
-    bannerHost.appendChild(bannerOptions);
+    const loadBanner = (target: {
+      keyValue: string;
+      width: number;
+      height: number;
+    }) => {
+      bannerHost.innerHTML = "";
+      const bannerOptions = document.createElement("script");
+      bannerOptions.text = [
+        "var atOptions = {",
+        `'key' : '${target.keyValue}',`,
+        "'format' : 'iframe',",
+        `'height' : ${target.height},`,
+        `'width' : ${target.width},`,
+        "'params' : {}",
+        "};",
+      ].join("\n");
+      bannerHost.appendChild(bannerOptions);
 
-    const bannerScript = document.createElement("script");
-    bannerScript.src = `https://bauval.org/22/${keyValue}`;
-    bannerHost.appendChild(bannerScript);
+      const bannerScript = document.createElement("script");
+      bannerScript.src = `https://bauval.org/22/${target.keyValue}`;
+      bannerHost.appendChild(bannerScript);
+    };
+
+    loadBanner({ keyValue, width, height });
+
+    const fallbackTimer = fallback
+      ? window.setTimeout(() => {
+          if (!bannerHost.querySelector("iframe")) loadBanner(fallback);
+        }, 5000)
+      : undefined;
 
     return () => {
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
       bannerHost.innerHTML = "";
     };
-  }, [id, keyValue, width, height]);
+  }, [id, keyValue, width, height, fallback]);
 
   return (
     <div
@@ -280,7 +298,7 @@ function Index() {
                   Iklan
                 </p>
                 <div className="hidden w-full justify-center md:flex">
-                  <AdsterraBanner id="adsterra-banner-728x90-jutaone" keyValue="fb8ddad9c7bd0acffe399516bd9c0321" width={728} height={90} />
+                  <AdsterraBanner id="adsterra-banner-728x90-jutaone" keyValue="fb8ddad9c7bd0acffe399516bd9c0321" width={728} height={90} fallback={{ keyValue: "dd858710f3683f83b56510194e12be28", width: 300, height: 250 }} />
                 </div>
                 <div className="flex w-full justify-center md:hidden">
                   <AdsterraBanner id="adsterra-banner-300x250-jutaone" keyValue="dd858710f3683f83b56510194e12be28" width={300} height={250} />
