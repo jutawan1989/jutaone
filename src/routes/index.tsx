@@ -21,20 +21,13 @@ import {
 
 const LOGO_URL = "/logo-jutaone-mark.png";
 
+
 function AdsterraAds() {
   useEffect(() => {
-    const nativeHost = document.getElementById("adsterra-native-jutaone");
     const bannerHost = document.getElementById("adsterra-banner-300x250-jutaone");
-    if (!nativeHost || !bannerHost) return;
+    if (!bannerHost) return;
 
-    nativeHost.innerHTML = "";
     bannerHost.innerHTML = "";
-
-    const nativeScript = document.createElement("script");
-    nativeScript.async = true;
-    nativeScript.setAttribute("data-cfasync", "false");
-    nativeScript.src = "https://bauval.org/21/6f784aa6acf075e8a702b261918ebc63";
-    nativeHost.appendChild(nativeScript);
 
     const bannerOptions = document.createElement("script");
     bannerOptions.text = [
@@ -53,24 +46,21 @@ function AdsterraAds() {
     bannerHost.appendChild(bannerScript);
 
     return () => {
-      nativeHost.innerHTML = "";
       bannerHost.innerHTML = "";
     };
   }, []);
 
   return (
     <section aria-label="Iklan" className="border-y border-border/60 bg-background/30">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-5 py-10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center px-5 py-8">
         <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           Iklan
         </p>
-        <div className="grid w-full items-start justify-center gap-8 md:grid-cols-2">
-          <div className="flex min-h-[250px] items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-background/20 p-2">
-            <div id="adsterra-native-jutaone" />
-          </div>
-          <div className="flex min-h-[250px] items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-background/20 p-2">
-            <div id="adsterra-banner-300x250-jutaone" />
-          </div>
+        <div className="mt-5 flex min-h-[250px] w-full items-center justify-center">
+          <div
+            id="adsterra-banner-300x250-jutaone"
+            className="flex min-h-[250px] min-w-[300px] items-center justify-center overflow-hidden"
+          />
         </div>
       </div>
     </section>
