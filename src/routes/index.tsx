@@ -260,7 +260,7 @@ function Index() {
         <MarketAnalyst />
       </Section>
 
-      {/* EMAS */}
+      {/* EMAS — no ad slot between AI and Gold */}
       <Section
         id="emas"
         eyebrow="Gold Intelligence"
