@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { getRegisterUrl } from "@/components/site/primitives";
 import { Header } from "@/components/site/Header";
 import { MarketAnalyst } from "@/components/site/MarketAnalyst";
 import { EarthHero } from "@/components/site/EarthHero";
