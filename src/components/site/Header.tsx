@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { GoldButton, LOGIN_URL } from "./primitives";
-
-const REGISTER_URL = "https://members.jutaone.biz/register";
+import { GoldButton, LOGIN_URL, getRegisterUrl } from "./primitives";
 
 const NAV = [
   { href: "#tentang", label: "Tentang" },
@@ -17,13 +15,7 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(false);
 
-  const referral =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("ref")?.trim() || ""
-      : "";
-  const registerUrl = referral
-    ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}`
-    : REGISTER_URL;
+  const registerUrl = getRegisterUrl();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
