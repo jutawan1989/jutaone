@@ -17,6 +17,14 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(false);
 
+  const referral =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("ref")?.trim() || ""
+      : "";
+  const registerUrl = referral
+    ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}`
+    : REGISTER_URL;
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3 lg:flex lg:justify-between">
@@ -49,7 +57,7 @@ export function Header() {
           >
             Masuk
           </a>
-          <GoldButton href={REGISTER_URL} className="px-5 py-2 text-xs">
+          <GoldButton href={registerUrl} className="px-5 py-2 text-xs">
             Gabung Sekarang
           </GoldButton>
         </div>
@@ -81,7 +89,7 @@ export function Header() {
             ))}
           </div>
           <div className="mt-5 flex flex-col gap-3">
-            <GoldButton href={REGISTER_URL}>Gabung Sekarang</GoldButton>
+            <GoldButton href={registerUrl}>Gabung Sekarang</GoldButton>
             <a
               href={LOGIN_URL}
               target="_blank"
