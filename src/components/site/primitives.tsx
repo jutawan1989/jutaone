@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
 
 export const LOGIN_URL = "https://members.jutaone.biz/login";
+export const REGISTER_URL = "https://members.jutaone.biz/register";
+
+export function getRegisterUrl() {
+  if (typeof window === "undefined") return REGISTER_URL;
+  const referral = new URLSearchParams(window.location.search).get("ref")?.trim() || "";
+  return referral ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}` : REGISTER_URL;
+}
 
 export function Section({
   id,
