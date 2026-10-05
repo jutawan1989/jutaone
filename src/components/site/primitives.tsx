@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 export const LOGIN_URL = "https://members.jutaone.biz/login";
 export const REGISTER_URL = "https://members.jutaone.biz/register";
+export const MEMBER_URL = "https://members.jutaone.biz/";
 
 export function getRegisterUrl() {
   if (typeof window === "undefined") return REGISTER_URL;
@@ -13,7 +14,7 @@ export function getRegisterUrl() {
   }
 
   const referral = fromUrl || window.localStorage.getItem("jutaone_ref")?.trim() || "";
-  return referral ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}` : REGISTER_URL;
+  return referral ? `${MEMBER_URL}?ref=${encodeURIComponent(referral)}` : MEMBER_URL;
 }
 
 export function useRegisterUrl() {
