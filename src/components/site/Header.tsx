@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoldButton, LOGIN_URL, getRegisterUrl } from "./primitives";
+import { GoldButton, LOGIN_URL, useRegisterUrl } from "./primitives";
 
 const NAV = [
   { href: "#tentang", label: "Tentang" },
@@ -15,7 +15,7 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(false);
 
-  const registerUrl = getRegisterUrl();
+  const registerUrl = useRegisterUrl();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
