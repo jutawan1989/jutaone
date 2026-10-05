@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 export const LOGIN_URL = "https://members.jutaone.biz/login";
 export const REGISTER_URL = "https://members.jutaone.biz/register";
@@ -14,6 +14,16 @@ export function getRegisterUrl() {
 
   const referral = fromUrl || window.localStorage.getItem("jutaone_ref")?.trim() || "";
   return referral ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}` : REGISTER_URL;
+}
+
+export function useRegisterUrl() {
+  const [registerUrl, setRegisterUrl] = useState(REGISTER_URL);
+
+  useEffect(() => {
+    setRegisterUrl(getRegisterUrl());
+  }, []);
+
+  return registerUrl;
 }
 
 export function Section({
