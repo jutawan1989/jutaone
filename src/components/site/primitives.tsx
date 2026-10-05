@@ -9,10 +9,10 @@ export function getRegisterUrl() {
   const fromUrl = new URLSearchParams(window.location.search).get("ref")?.trim() || "";
 
   if (fromUrl) {
-    window.sessionStorage.setItem("jutaone_ref", fromUrl);
+    window.localStorage.setItem("jutaone_ref", fromUrl);
   }
 
-  const referral = fromUrl || window.sessionStorage.getItem("jutaone_ref")?.trim() || "";
+  const referral = fromUrl || window.localStorage.getItem("jutaone_ref")?.trim() || "";
   return referral ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}` : REGISTER_URL;
 }
 
