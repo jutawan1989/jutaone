@@ -5,7 +5,14 @@ export const REGISTER_URL = "https://members.jutaone.biz/register";
 
 export function getRegisterUrl() {
   if (typeof window === "undefined") return REGISTER_URL;
-  const referral = new URLSearchParams(window.location.search).get("ref")?.trim() || "";
+
+  const fromUrl = new URLSearchParams(window.location.search).get("ref")?.trim() || "";
+
+  if (fromUrl) {
+    window.sessionStorage.setItem("jutaone_ref", fromUrl);
+  }
+
+  const referral = fromUrl || window.sessionStorage.getItem("jutaone_ref")?.trim() || "";
   return referral ? `${REGISTER_URL}?ref=${encodeURIComponent(referral)}` : REGISTER_URL;
 }
 
