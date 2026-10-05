@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { getRegisterUrl } from "@/components/site/primitives";
 import { Header } from "@/components/site/Header";
 import { MarketAnalyst } from "@/components/site/MarketAnalyst";
 import { EarthHero } from "@/components/site/EarthHero";
@@ -14,6 +13,7 @@ import {
   Card,
   GoldButton,
   LOGIN_URL,
+  getRegisterUrl,
   Section,
   SilverButton,
   SimLabel,
@@ -177,7 +177,7 @@ function Index() {
               ETA serta peluang pertumbuhan melalui program afiliasi JUTAONE.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
-              <GoldButton href={LOGIN_URL}>Gabung Sekarang</GoldButton>
+              <GoldButton href={getRegisterUrl()}>Gabung Sekarang</GoldButton>
               <SilverButton href={LOGIN_URL}>Lihat Peluang</SilverButton>
             </div>
             <div className="mt-10 grid max-w-md grid-cols-3 gap-4">
@@ -428,7 +428,7 @@ function Index() {
               <li>• Berhak mengikuti program afiliasi hingga 20 level</li>
             </ul>
             <div className="mt-8 flex flex-wrap gap-4">
-              <GoldButton href={LOGIN_URL}>Daftar & Beli PIN</GoldButton>
+              <GoldButton href={getRegisterUrl()}>Daftar & Beli PIN</GoldButton>
               <SilverButton href={LOGIN_URL}>Masuk</SilverButton>
             </div>
             <p className="mt-5 text-xs text-muted-foreground">
@@ -477,7 +477,7 @@ function Index() {
             kecil hari ini, lalu tumbuh bersama komunitas kami.
           </p>
           <div className="relative mt-9 flex flex-wrap justify-center gap-4">
-            <GoldButton href={LOGIN_URL}>Gabung Sekarang</GoldButton>
+            <GoldButton href={getRegisterUrl()}>Gabung Sekarang</GoldButton>
             <SilverButton href={LOGIN_URL}>Masuk</SilverButton>
           </div>
         </div>
